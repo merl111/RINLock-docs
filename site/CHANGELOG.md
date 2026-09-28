@@ -2,6 +2,10 @@
 
 ## 0.5.0 — unreleased
 
+- Routed webhook, Slack, ntfy and SMTP destinations with independent durable deliveries.
+- SMTP STARTTLS/implicit TLS, environment credentials and explicit CLI delivery tests.
+- Notification setup guides, self-hosted ntfy iOS instructions and systemd examples.
+
 - Opt-in Trivy scanning for local rootfs, application directories and image archives.
 - Cached advisory sync, validated atomic CISA KEV refresh and feed freshness reporting.
 - Persisted scan baselines, transactional change events/outbox and restart deduplication.

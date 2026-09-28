@@ -29,6 +29,8 @@ separate root collector socket, `/run/rinlock-collector/prevention.sock`.
 | `replay --config FILE [--input FILE\|-] [--changed-only]` | Compare candidate detection scores without writes or notifications |
 | `incidents` | Recent correlated incidents |
 | `incident --id N [--state STATE --note TEXT] [--actions]` | Inspect/review incident and review history |
+| `destinations --config FILE [--action check]` | Validate destination configuration locally; no network or daemon needed |
+| `destinations --config FILE --action test --destination ID` | Send a real test to exactly one configured destination |
 | `notifications --pause SECONDS` | Pause delivery; 0 resumes queued work |
 | `deliveries --state pending\|failed\|delivered` | Delivery history and failures |
 | `deliveries --retry ID` | Requeue a failed delivery with a fresh attempt budget |
@@ -47,7 +49,9 @@ Optional prevention flags: `--prevention-config`, `--prevention-object`,
 `--prevention-socket`. `serve --sensor-socket PATH` consumes the separate collector;
 without that flag it uses combined collection. `serve --demo` uses synthetic data.
 `serve --vulnerability-config FILE` enables the separate advisory scanning worker.
-Storage uses `--db`; webhooks use environment variables, not command-line secrets.
+Storage uses `--db`; `--notification-config FILE` enables named destinations.
+Notification credentials use environment variables, not command-line secrets.
+See [adapter and SMTP setup](notifications.md).
 
 Review states are `open`, `acknowledged`, `resolved`. New evidence can reopen a
 resolved incident. Detection rollback is persisted in policy history, but the
@@ -118,3 +122,7 @@ Webhook bodies retain the top-level event fields and can include incident data.
 Receivers should support additive fields and deduplicate the `Idempotency-Key`
 header. Delivery authentication uses the optional bearer token. Delivery success
 means the HTTP receiver accepted the request; it does not prove a human saw it.
+
+Delivery records expose a top-level `id`, `destination`, nested `event`, attempts
+and status. Retry URLs and `before` cursors use the delivery ID, not `event.id`.
+See [notification destinations](notifications.md) for payloads and migration.

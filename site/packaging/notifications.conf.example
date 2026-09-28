@@ -1,0 +1,9 @@
+# Copy to /etc/systemd/system/rinlock.service.d/notifications.conf after
+# preparing /etc/rinlock/notifications.json and notifications.env.
+# If vulnerability scanning is also enabled, combine both flags in ONE ExecStart.
+[Service]
+EnvironmentFile=
+EnvironmentFile=/etc/rinlock/notifications.env
+UnsetEnvironment=RINLOCK_WEBHOOK_URL RINLOCK_WEBHOOK_TOKEN
+ExecStart=
+ExecStart=/usr/local/bin/rinlock serve --config /etc/rinlock/rules.json --sensor-socket /run/rinlock-collector/events.sock --socket /run/rinlock/rinlock.sock --db /var/lib/rinlock/events.db --notification-config /etc/rinlock/notifications.json

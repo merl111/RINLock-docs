@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project_version": "0.5.0-dev",
-  "source_revision": "bb1bf41f29f91d3fb85489c154e0032c42496258",
+  "source_revision": "178374cd5700080ab59a8d704ec1a2aaab73ca84",
   "source_dirty": false,
   "site_url": "https://merl111.github.io/RINLock-docs/",
   "resources": [
@@ -18,48 +18,56 @@
       "url": "https://merl111.github.io/RINLock-docs/getting-started.md",
       "title": "Getting started",
       "type": "text/markdown",
-      "bytes": 7571,
-      "sha256": "892ec24118034b32052119eb29347be4fac4582991cffd824704bd730e9a522b"
+      "bytes": 7823,
+      "sha256": "c9cbc64452f140e2b8c711c5911aa89b4289272b5e372551ff6edc8a944d9314"
     },
     {
       "path": "docs/index.md",
       "url": "https://merl111.github.io/RINLock-docs/docs/index.md",
       "title": "Guide index",
       "type": "text/markdown",
-      "bytes": 2113,
-      "sha256": "13b39740a106aae5504eac5ece43ce7f96b4365fa824cff6a9b234cbc91f7aab"
+      "bytes": 2259,
+      "sha256": "a4f530ddaa6bd6ff1d1d7e568ee4f91bf4bf5f40081ed0791fc5a43a100faf7e"
     },
     {
       "path": "docs/architecture.md",
       "url": "https://merl111.github.io/RINLock-docs/docs/architecture.md",
       "title": "Architecture",
       "type": "text/markdown",
-      "bytes": 6120,
-      "sha256": "0aafb9c7627051827037d5373d8142b2a8856ab2e007908e042c967c6cf14d0b"
+      "bytes": 6423,
+      "sha256": "656d4d43a4e534e595781907ef3744cd9f59b97442d6297594533ff802d25b26"
     },
     {
       "path": "docs/configuration.md",
       "url": "https://merl111.github.io/RINLock-docs/docs/configuration.md",
       "title": "Configuration",
       "type": "text/markdown",
-      "bytes": 5737,
-      "sha256": "f6eb9afb081cdde4714d085ab68a2843213402e86504f63d4d2fe1124e010af6"
+      "bytes": 6016,
+      "sha256": "1275b5c0b77c3075df7d2a7be3bbeb379eba5c37430e30fe2a9dddcd47a32670"
+    },
+    {
+      "path": "docs/notifications.md",
+      "url": "https://merl111.github.io/RINLock-docs/docs/notifications.md",
+      "title": "Notification destinations",
+      "type": "text/markdown",
+      "bytes": 13203,
+      "sha256": "f94fb17112370b3a597b7d8ee58e31d989e885525340e5d83b4d989cc444d3ea"
     },
     {
       "path": "docs/reference.md",
       "url": "https://merl111.github.io/RINLock-docs/docs/reference.md",
       "title": "CLI and API",
       "type": "text/markdown",
-      "bytes": 7195,
-      "sha256": "839c42de9860b48559b43cf96041c8d8e503b7b5aafbaa51fee01d8f706f4df7"
+      "bytes": 7803,
+      "sha256": "225f7b240c12cdbad676ae79a1aaeac7709a84d9b2eaadf360896a497d46120f"
     },
     {
       "path": "docs/stage-3.md",
       "url": "https://merl111.github.io/RINLock-docs/docs/stage-3.md",
       "title": "Deployment and operations",
       "type": "text/markdown",
-      "bytes": 15786,
-      "sha256": "7f99ed7304f67eaecce16de9c5fe41d04a0d35412d07b8a8ecc638cc0197c426"
+      "bytes": 16106,
+      "sha256": "24b735b14af7d46b7c6a32ee0506661c8a3954260f3a91a0478a362cd3025743"
     },
     {
       "path": "docs/prevention.md",
@@ -82,8 +90,8 @@
       "url": "https://merl111.github.io/RINLock-docs/docs/agents.md",
       "title": "Agent integration",
       "type": "text/markdown",
-      "bytes": 8859,
-      "sha256": "2395c0dc2d9f9588d9f1d4906b76040be2a7fdf18477f01d90b64cb44e12f828"
+      "bytes": 9329,
+      "sha256": "7d3dfb19ab3db11d337b0ce9255f6c39c0bccbb2d3af9700476ee4efe429069b"
     },
     {
       "path": "docs/documentation-site.md",
@@ -106,8 +114,8 @@
       "url": "https://merl111.github.io/RINLock-docs/SECURITY.md",
       "title": "Security model",
       "type": "text/markdown",
-      "bytes": 3358,
-      "sha256": "ce49e882c32ce89c31e00b2272aa42fd15b17578f90daa52f3cbae62b32dce58"
+      "bytes": 3378,
+      "sha256": "1219314d3852c4b5c49b4f6dbf4bcac8a437a3ec70ba2739a5e4456ab00e0375"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -122,8 +130,8 @@
       "url": "https://merl111.github.io/RINLock-docs/CHANGELOG.md",
       "title": "Changelog",
       "type": "text/markdown",
-      "bytes": 2040,
-      "sha256": "587809065c7e05bee09b428e859c0cd811b1f00b01b7b5b3052a7a93ba3f66a7"
+      "bytes": 2302,
+      "sha256": "38362f612226d1954ce1da90da1f86b82456210e123f50432359891919f2c6d2"
     },
     {
       "path": "docs/stage-1.md",
@@ -146,8 +154,8 @@
       "url": "https://merl111.github.io/RINLock-docs/configs/index.md",
       "title": "Configuration examples",
       "type": "text/markdown",
-      "bytes": 481,
-      "sha256": "3769b41d8468ebd6971eee5a03284c05815884505b922737e683662118023ce8"
+      "bytes": 583,
+      "sha256": "4ac8213e7255665a10d91c8c3fe21d52401f0ee6d738fff07071c5aa9e8a36cc"
     },
     {
       "path": "LICENSE",
@@ -278,20 +286,44 @@
       "sha256": "69d8738bf6371a042a9f13e483f59f77806ece3d0569ee5fdcd7ea0f15545de2"
     },
     {
+      "path": "configs/notifications-example.json",
+      "url": "https://merl111.github.io/RINLock-docs/configs/notifications-example.json",
+      "title": "notifications-example.json",
+      "type": "application/json",
+      "bytes": 878,
+      "sha256": "e7923d9f7e6574f1ec1d6edb286bdb7e3f3ff8ce18fb7b265f0cd2c6477820e5"
+    },
+    {
+      "path": "packaging/notifications.conf.example",
+      "url": "https://merl111.github.io/RINLock-docs/packaging/notifications.conf.example",
+      "title": "notifications.conf.example",
+      "type": "text/plain",
+      "bytes": 610,
+      "sha256": "d6885c1ec776c0f5f49edd6da804ae90fd046116598eeb3eabafa35e5c36c46d"
+    },
+    {
+      "path": "packaging/notifications.env.example",
+      "url": "https://merl111.github.io/RINLock-docs/packaging/notifications.env.example",
+      "title": "notifications.env.example",
+      "type": "text/plain",
+      "bytes": 537,
+      "sha256": "b571fd39e0d04a69e2fe8c1e000e47885aa0dc093dd328513c31d8ebe88d6215"
+    },
+    {
       "path": "llms.txt",
       "url": "https://merl111.github.io/RINLock-docs/llms.txt",
       "title": "llms.txt",
       "type": "text/plain",
-      "bytes": 2932,
-      "sha256": "d4557bcec8bce448cd4133ca02468faf3e4cca0717586ba5bb81d5276b1470f7"
+      "bytes": 3095,
+      "sha256": "32c284499ff3dd82725baac7b46fbd7dcb8162e8fe8be93aaf6f0bdd14287798"
     },
     {
       "path": "llms-full.txt",
       "url": "https://merl111.github.io/RINLock-docs/llms-full.txt",
       "title": "llms-full.txt",
       "type": "text/plain",
-      "bytes": 91721,
-      "sha256": "0cdb947c35eeb5e4538f3a5dbd368c0619b047a144c2ebf1fd8b51c33b846c05"
+      "bytes": 107882,
+      "sha256": "e191cfeefba08438beee8639e8cf8c0bcec1292d895320c6868ec92ffbaa9d1f"
     }
   ]
 }

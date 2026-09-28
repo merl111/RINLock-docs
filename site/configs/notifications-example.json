@@ -1,0 +1,38 @@
+{
+  "destinations": [
+    {
+      "id": "security-webhook",
+      "type": "webhook",
+      "url_env": "RINLOCK_SECURITY_URL",
+      "token_env": "RINLOCK_SECURITY_TOKEN",
+      "min_score": 70
+    },
+    {
+      "id": "security-slack",
+      "type": "slack",
+      "url_env": "RINLOCK_SLACK_URL",
+      "min_score": 80
+    },
+    {
+      "id": "phone",
+      "type": "ntfy",
+      "url_env": "RINLOCK_NTFY_URL",
+      "token_env": "RINLOCK_NTFY_TOKEN",
+      "topic": "rinlock-alerts",
+      "min_score": 90
+    },
+    {
+      "id": "security-email",
+      "type": "smtp",
+      "min_score": 90,
+      "smtp": {
+        "address": "smtp.example.org:587",
+        "tls": "starttls",
+        "from": "rinlock@example.org",
+        "to": ["security@example.org"],
+        "username_env": "RINLOCK_SMTP_USERNAME",
+        "password_env": "RINLOCK_SMTP_PASSWORD"
+      }
+    }
+  ]
+}

@@ -452,6 +452,34 @@
   
   
     <li class="md-nav__item">
+      <a href="notifications.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="reference.html" class="md-nav__link">
         
   
@@ -1240,7 +1268,7 @@
     <a href="agents.md">Read as Markdown</a>
     <a href="../llms.txt">Agent index</a>
     <a href="../llms-full.txt">Full context</a>
-    <span>v0.5.0-dev · bb1bf41</span>
+    <span>v0.5.0-dev · 178374c</span>
   </div>
   
   
@@ -1361,12 +1389,19 @@ Hot changes and history are runtime-only; restart reloads the startup file.
 Test both allowed and denied paths on a compatible disposable kernel before
 enforcement. File-open prevention does not revoke already-open descriptors.</p>
 <h2 id="notifications-and-retries">Notifications and retries<a class="headerlink" href="#notifications-and-retries" title="Permanent link">&para;</a></h2>
-<p>The daemon queues webhooks asynchronously and records delivery attempts. Bodies
+<p>The daemon supports webhook, Slack, ntfy and SMTP destinations with independent
+delivery records. See <a href="notifications.html">configuration and migration</a>.
+<code>rinlock destinations --config FILE</code> validates locally without network access.
+<code>--action test --destination ID</code> sends a real message; only use it when the operator
+requests an actual delivery test. SMTP requires verified TLS.</p>
+<p>Generic webhook bodies
 retain top-level event version 2 fields and can contain incident context. Accept
 additive fields and deduplicate the <code>Idempotency-Key</code> header. A receiver should
 acknowledge only after accepting responsibility for the event. Successful HTTP
 delivery is not proof that an operator read the notification.</p>
 <p>Inspect <code>GET /v1/deliveries</code> and its bounded history when troubleshooting.
+Use top-level delivery <code>id</code> for retries/cursors and <code>destination</code> for routing;
+<code>event.id</code> is the evidence ID shared by all deliveries of that event.
 Retrying a failed delivery is an explicit action; see <a href="stage-3.html">operations</a>.
 Notification credentials belong in the documented environment configuration,
 never in policy JSON, prompts, generated examples or committed files.</p>

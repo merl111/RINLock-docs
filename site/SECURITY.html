@@ -452,6 +452,34 @@
   
   
     <li class="md-nav__item">
+      <a href="docs/notifications.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="docs/reference.html" class="md-nav__link">
         
   
@@ -1174,7 +1202,7 @@
     <a href="SECURITY.md">Read as Markdown</a>
     <a href="llms.txt">Agent index</a>
     <a href="llms-full.txt">Full context</a>
-    <span>v0.5.0-dev · bb1bf41</span>
+    <span>v0.5.0-dev · 178374c</span>
   </div>
   
   
@@ -1192,7 +1220,7 @@ it does not guarantee that every intrusion is detected or prevented.</p>
 <li>The privileged collector has kernel observation/enforcement access. Keep its
   binary, BPF objects, startup configuration and runtime directories protected.</li>
 <li>The unprivileged daemon stores potentially sensitive metadata and can deliver
-  events to an operator-configured webhook. Access to its Unix socket grants
+  events to operator-configured notification destinations. Access to its Unix socket grants
   event visibility and detection/incident/notification operations.</li>
 <li>Prevention mutations require UID 0 verified by <code>SO_PEERCRED</code>. The telemetry
   account is read-only on that separate socket. Remote HTTP exposure is unsupported.</li>
@@ -1228,7 +1256,7 @@ response window.</p>
 <p>Trivy is a separately installed trusted executable and shares the daemon account
 and filesystem restrictions. Advisory feeds are data, not executable policies. Scan
 targets and cache paths come only from local startup configuration; API clients
-cannot supply commands or paths. The worker does not receive webhook credentials.
+cannot supply commands or paths. The worker does not receive notification credentials.
 Package findings and KEV membership do not establish local exploitation or trigger
 automatic prevention. Coverage and stale-feed limitations are documented in
 <a href="docs/vulnerabilities.html">the scanner guide</a>.</p>

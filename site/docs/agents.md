@@ -140,13 +140,21 @@ enforcement. File-open prevention does not revoke already-open descriptors.
 
 ## Notifications and retries
 
-The daemon queues webhooks asynchronously and records delivery attempts. Bodies
+The daemon supports webhook, Slack, ntfy and SMTP destinations with independent
+delivery records. See [configuration and migration](notifications.md).
+`rinlock destinations --config FILE` validates locally without network access.
+`--action test --destination ID` sends a real message; only use it when the operator
+requests an actual delivery test. SMTP requires verified TLS.
+
+Generic webhook bodies
 retain top-level event version 2 fields and can contain incident context. Accept
 additive fields and deduplicate the `Idempotency-Key` header. A receiver should
 acknowledge only after accepting responsibility for the event. Successful HTTP
 delivery is not proof that an operator read the notification.
 
 Inspect `GET /v1/deliveries` and its bounded history when troubleshooting.
+Use top-level delivery `id` for retries/cursors and `destination` for routing;
+`event.id` is the evidence ID shared by all deliveries of that event.
 Retrying a failed delivery is an explicit action; see [operations](stage-3.md).
 Notification credentials belong in the documented environment configuration,
 never in policy JSON, prompts, generated examples or committed files.

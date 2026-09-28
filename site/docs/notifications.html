@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://merl111.github.io/RINLock-docs/docs/vulnerabilities.html">
+        <link rel="canonical" href="https://merl111.github.io/RINLock-docs/docs/notifications.html">
       
       
-        <link rel="prev" href="prevention.html">
+        <link rel="prev" href="configuration.html">
       
       
-        <link rel="next" href="agents.html">
+        <link rel="next" href="reference.html">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Vulnerability scanning - RINLock</title>
+        <title>Notifications - RINLock</title>
       
     
     
@@ -58,7 +58,7 @@
   
   <link rel="describedby" href="https://merl111.github.io/RINLock-docs/llms.txt" type="text/plain">
   
-  <link rel="alternate" href="https://merl111.github.io/RINLock-docs/docs/vulnerabilities.md" type="text/markdown" title="Markdown version">
+  <link rel="alternate" href="https://merl111.github.io/RINLock-docs/docs/notifications.md" type="text/markdown" title="Markdown version">
   
 
   </head>
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#vulnerability-inventory-and-advisory-scanning" class="md-skip">
+        <a href="#notification-destinations" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Vulnerability scanning
+              Notifications
             
           </span>
         </div>
@@ -451,10 +451,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="notifications.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="notifications.html" class="md-nav__link md-nav__link--active">
         
   
   
@@ -470,6 +497,114 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-destination-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common destination fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generic-webhook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generic webhook
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ntfy-including-self-hosting-and-ios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ntfy, including self-hosting and iOS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#smtp-email" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMTP email
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packaged-systemd-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packaged systemd deployment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#queue-operations-and-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queue operations and migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -563,37 +698,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Vulnerability scanning
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="vulnerabilities.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="vulnerabilities.html" class="md-nav__link">
         
   
   
@@ -609,103 +717,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#updates-offline-scans-and-failure-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Updates, offline scans and failure handling
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#findings-audit-history-and-notifications" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Findings, audit history and notifications
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#terminal-dashboard-and-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Terminal dashboard and CLI
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installed-service" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Installed service
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Validation
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1174,10 +1185,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
+  <a href="#quick-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Setup
+        Quick setup
       
     </span>
   </a>
@@ -1185,10 +1196,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
+  <a href="#common-destination-fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration
+        Common destination fields
       
     </span>
   </a>
@@ -1196,10 +1207,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#updates-offline-scans-and-failure-handling" class="md-nav__link">
+  <a href="#generic-webhook" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Updates, offline scans and failure handling
+        Generic webhook
       
     </span>
   </a>
@@ -1207,10 +1218,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#findings-audit-history-and-notifications" class="md-nav__link">
+  <a href="#slack" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Findings, audit history and notifications
+        Slack
       
     </span>
   </a>
@@ -1218,10 +1229,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#terminal-dashboard-and-cli" class="md-nav__link">
+  <a href="#ntfy-including-self-hosting-and-ios" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Terminal dashboard and CLI
+        ntfy, including self-hosting and iOS
       
     </span>
   </a>
@@ -1229,10 +1240,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installed-service" class="md-nav__link">
+  <a href="#smtp-email" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installed service
+        SMTP email
       
     </span>
   </a>
@@ -1240,10 +1251,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#validation" class="md-nav__link">
+  <a href="#packaged-systemd-deployment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Validation
+        Packaged systemd deployment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#queue-operations-and-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queue operations and migration
       
     </span>
   </a>
@@ -1265,7 +1287,7 @@
                 
   
   <div class="agent-links" aria-label="Agent documentation formats">
-    <a href="vulnerabilities.md">Read as Markdown</a>
+    <a href="notifications.md">Read as Markdown</a>
     <a href="../llms.txt">Agent index</a>
     <a href="../llms-full.txt">Full context</a>
     <span>v0.5.0-dev · 178374c</span>
@@ -1276,38 +1298,33 @@
 
 
 
-<h1 id="vulnerability-inventory-and-advisory-scanning">Vulnerability inventory and advisory scanning<a class="headerlink" href="#vulnerability-inventory-and-advisory-scanning" title="Permanent link">&para;</a></h1>
-<p>RINLock can periodically check explicitly configured local targets against Trivy's
-advisory database and enrich CVE matches with CISA's Known Exploited Vulnerabilities
-(KEV) catalog. This runs in the userspace daemon, independently of eBPF collection.
-It is <strong>opt-in</strong>: ordinary <code>demo</code>, <code>serve</code>, and installed services do not download
-advisories or scan packages unless <code>--vulnerability-config FILE</code> is supplied.</p>
-<p>A CVE match indicates potential exposure, not proof of exploitation. KEV means
-exploitation has been observed somewhere in the wild, not necessarily on this host.
-The scanner never executes exploit code or automatically installs prevention rules.</p>
-<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
-<p>Install a trusted Trivy binary separately. The adapter was tested with <strong>Trivy
-0.74.0</strong>, JSON report schema 2 and vulnerability database schema 2. Download from
-<a href="https://github.com/aquasecurity/trivy/releases">Trivy's official releases</a> and
-follow its <a href="https://trivy.dev/docs/latest/getting-started/installation/">installation verification instructions</a>.
-RINLock neither bundles nor auto-upgrades the scanner executable. Keep the scanner
-patched; it parses files and archives from scan targets.</p>
-<p>Copy and edit <a href="../configs/vulnerabilities-example.json">the example configuration</a>:</p>
-<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>configs/vulnerabilities-example.json<span class="w"> </span>/tmp/vulnerabilities.json
-<span class="c1"># Edit trivy_path, cache_dir, and targets for this machine and daemon user.</span>
-./bin/rinlock<span class="w"> </span>vulnerabilities<span class="w"> </span>--action<span class="w"> </span>check<span class="w"> </span>--config<span class="w"> </span>/tmp/vulnerabilities.json
-./bin/rinlock<span class="w"> </span>serve<span class="w"> </span>--demo<span class="w"> </span>--vulnerability-config<span class="w"> </span>/tmp/vulnerabilities.json
-<span class="c1"># Another terminal, using the same daemon user's default socket:</span>
-./bin/rinlock<span class="w"> </span>dashboard
+<h1 id="notification-destinations">Notification destinations<a class="headerlink" href="#notification-destinations" title="Permanent link">&para;</a></h1>
+<p>RINLock supports generic HTTP webhooks, Slack incoming webhooks, ntfy mobile push,
+and SMTP email. Destinations are opt-in. Up to 16 destinations can receive the same
+alert, each with independent attempts, backoff and a persistent delivery record.
+A slow destination does not block another destination's worker or event ingestion.</p>
+<h2 id="quick-setup">Quick setup<a class="headerlink" href="#quick-setup" title="Permanent link">&para;</a></h2>
+<p>Copy <a href="../configs/notifications-example.json">notifications-example.json</a>, remove
+unwanted destinations, and supply the referenced environment variables. URLs and
+authentication secrets are read from the daemon's environment at startup; the
+JSON stores their variable names. Do not commit live credentials or secret URLs.</p>
+<div class="highlight"><pre><span></span><code>rinlock<span class="w"> </span>destinations<span class="w"> </span>--config<span class="w"> </span>notifications.json
+rinlock<span class="w"> </span>serve<span class="w"> </span>--config<span class="w"> </span>rules.json<span class="w"> </span>--notification-config<span class="w"> </span>notifications.json
 </code></pre></div>
-<p>Here <code>--demo</code> only makes <strong>runtime events</strong> synthetic. Explicit vulnerability
-configuration still performs real scans of the configured targets. For live
-collection, use the normal <code>serve --sensor-socket PATH ...</code> flags instead.</p>
-<p>The service starts a background sync followed by scans. Missing scanner binaries,
-failed downloads and failed scans appear in status without stopping runtime
-collection. Storage failures still follow the daemon's normal failure behavior.
-The configuration is read at startup; changes require restarting the daemon.</p>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>The first command validates JSON and field constraints locally. It does not read
+credential values, connect to providers, or require a running daemon. <code>serve</code>
+resolves every configured variable and refuses invalid/missing values before
+starting collection. Destination configuration and credentials require a daemon
+restart; <code>rinlock policy</code> reloads detection policy only.</p>
+<p>Send an explicit test to one destination, using the same environment as the daemon:</p>
+<div class="highlight"><pre><span></span><code>rinlock<span class="w"> </span>destinations<span class="w"> </span>--config<span class="w"> </span>notifications.json<span class="w"> </span>--action<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--destination<span class="w"> </span>phone
+</code></pre></div>
+<p><strong>This sends a real message.</strong> It is labelled <code>notification_test</code>, with score 90
+and an explanation that no incident was detected. It bypasses routing, mutes,
+pause, cooldown, the database and automatic retries. Other destinations' secrets
+are not required for this test. A zero exit status means the provider accepted
+the message, not that a device displayed it or someone read it.</p>
+<h2 id="common-destination-fields">Common destination fields<a class="headerlink" href="#common-destination-fields" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -1317,184 +1334,236 @@ The configuration is read at startup; changes require restarting the daemon.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>version</code></td>
-<td>Required schema version, currently <code>1</code></td>
+<td><code>id</code></td>
+<td>Stable unique ID; 1–64 letters, digits, underscores or hyphens, starting with a letter/digit</td>
 </tr>
 <tr>
-<td><code>trivy_path</code></td>
-<td>Absolute path to the scanner executable; default <code>/usr/local/bin/trivy</code></td>
+<td><code>type</code></td>
+<td><code>webhook</code>, <code>slack</code>, <code>ntfy</code>, or <code>smtp</code></td>
 </tr>
 <tr>
-<td><code>cache_dir</code></td>
-<td>Dedicated writable cache; default <code>/var/lib/rinlock/vulnerability-cache</code>; cannot be <code>/</code></td>
+<td><code>min_score</code></td>
+<td>Optional 0–100 minimum; defaults to 0 but cannot lower global <code>notify_score</code></td>
 </tr>
 <tr>
-<td><code>sync_hours</code></td>
-<td>Advisory/KEV refresh interval, 1–168; default 24</td>
+<td><code>rules</code></td>
+<td>Optional rule-ID allowlist, including correlation rule IDs</td>
 </tr>
 <tr>
-<td><code>scan_hours</code></td>
-<td>Cached scan interval, 1–168; default 6</td>
+<td><code>kinds</code></td>
+<td>Optional event-kind allowlist, such as <code>exec</code>, <code>prevention</code>, <code>vulnerability</code></td>
 </tr>
 <tr>
-<td><code>timeout_seconds</code></td>
-<td>Timeout <strong>per scanner subprocess</strong>, 10–3600; default 900</td>
+<td><code>url_env</code></td>
+<td>HTTP types: environment variable containing the destination URL</td>
 </tr>
 <tr>
-<td><code>java_db</code></td>
-<td>Also download Trivy's Java index during sync; default false</td>
+<td><code>token_env</code></td>
+<td>Optional bearer token for webhook/ntfy; omit when unused</td>
 </tr>
 <tr>
-<td><code>targets</code></td>
-<td>1–32 targets, each with unique <code>id</code>, <code>kind</code>, and absolute clean <code>path</code></td>
+<td><code>topic</code></td>
+<td>Required ntfy topic, with the same character/length limits as <code>id</code></td>
+</tr>
+<tr>
+<td><code>smtp</code></td>
+<td>Required SMTP settings object, described below</td>
 </tr>
 </tbody>
 </table>
-<p>Target IDs are ASCII letters, digits, dots, underscores or hyphens, 1–64 characters,
-starting with a letter or digit. Target kinds:</p>
-<ul>
-<li><code>rootfs</code>: an accessible Linux root filesystem, such as <code>/</code> or an exported rootfs.</li>
-<li><code>filesystem</code>: an application directory containing supported dependency manifests
-  or binaries. This does not claim complete OS package coverage.</li>
-<li><code>image</code>: a <strong>local container image archive</strong> accepted by <code>trivy image --input</code>.
-  For example, produce one with <code>docker save -o /path/image.tar IMAGE</code>.</li>
-</ul>
-<p>There is no automatic container discovery, registry pull, Docker socket access,
-remote target parameter, or arbitrary scanner-argument API. Image archives and
-rootfs exports must be refreshed separately when workloads change. A mutable target
-is not a point-in-time filesystem snapshot. Target paths are administrator-controlled.</p>
-<p>Use a cache exclusively for this daemon. Scanner jobs are serialized within one
-process; sharing the cache with other daemons or external writers is unsupported.
-Budget disk for Trivy's databases: the main database can exceed 1 GiB and the
-optional Java index adds more. This cache is separate from RINLock's event database
-and its storage quota. Temporary scanner files also use the cache directory.</p>
-<h2 id="updates-offline-scans-and-failure-handling">Updates, offline scans and failure handling<a class="headerlink" href="#updates-offline-scans-and-failure-handling" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Startup and scheduled sync update the main Trivy database, optional Java index,
-  and the <a href="https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json">official CISA JSON feed</a>,
-  then scan all configured targets. Manual <code>sync</code> and <code>refresh</code> both sync <strong>and rescan</strong>.</li>
-<li><code>scan</code> uses the cached database and KEV catalog. Trivy runs with <code>--offline-scan</code>,
-  <code>--skip-db-update</code>, and <code>--skip-java-db-update</code>; it does not pull images or resolve
-  dependencies online. Initial sync needs network access. Missing caches fail visibly.</li>
-<li>KEV downloads have a 60-second HTTP timeout, no redirects, a 16 MiB bound, schema
-  and count checks, duplicate-ID checks and a release-time rollback guard. A valid
-  response replaces the cached catalog atomically; failure leaves the prior one.</li>
-<li>Trivy receives explicit flags, <code>/dev/null</code> config/ignore files and a restricted
-  environment. Inherited <code>TRIVY_*</code>, webhook tokens, and home-directory credentials
-  are not passed through. Proxy and TLS certificate environment settings are allowed.</li>
-<li>Database freshness reflects its published next-update time and a 48-hour maximum
-  age. KEV freshness reflects the last successful download and configured interval,
-  not just the catalog publication date. Stale cached scans carry warnings.</li>
-<li>Trivy stdout is bounded to 64 MiB and stderr to 4 KiB. More than 10,000 findings
-  per report is rejected; split large targets. Timeouts kill the scanner process group.</li>
-<li>Failed scans preserve the last successful findings. Zero detected packages, or
-  rootfs/image results without OS inventory, are marked <code>unknown</code>; absent previous
-  findings are retained. Successful scans are labelled <code>partial</code>, never exhaustive.</li>
-<li>Successful reports may omit unsupported packages. Inspect package counts,
-  warnings and <code>scanner_diagnostics</code>; a low count or zero findings does not establish
-  that a system is safe. A distro-derived system such as Manjaro needs explicit
-  coverage validation; it must not be assumed equivalent to Arch's advisories.</li>
-<li>Java artifact discovery may require the Java index. Enable <code>java_db</code> before
-  scanning JARs; uncached offline analysis may fail. Other offline discovery limits
-  depend on Trivy's supported formats.</li>
-</ul>
-<p>Matching uses Trivy's distribution/vendor-aware advisories, including backported
-fixes, rather than naive upstream version comparisons. See
-<a href="https://trivy.dev/docs/latest/guide/scanner/vulnerability/">Trivy's vulnerability coverage</a>.
-There is no separate NVD mirror maintained by RINLock.</p>
-<h2 id="findings-audit-history-and-notifications">Findings, audit history and notifications<a class="headerlink" href="#findings-audit-history-and-notifications" title="Permanent link">&para;</a></h2>
-<p>Latest findings are stored in the existing Bolt database per target. Identity
-includes target, component, ecosystem, package path/name, installed version and
-advisory ID. A scan transaction atomically commits its latest baseline, change
-events and durable webhook outbox. A failed transaction cannot advance the baseline
-while losing its notifications. Repeated scans and daemon restarts deduplicate.</p>
-<p>Changes that create a <code>vulnerability</code> event:</p>
-<ul>
-<li><code>new</code>: a newly detected package/advisory match;</li>
-<li><code>changed</code>: severity, fixed version, or KEV membership changed;</li>
-<li><code>no_longer_detected</code>: a previously detected match disappeared from a successful
-  scan. This does <strong>not</strong> claim it was patched; package removal, changed advisory
-  data, target content, or coverage can also cause disappearance.</li>
-</ul>
-<p>All job completions/failures also produce <code>vulnerability_scan</code> audit events. Individual
-scan summaries, timestamps, counts, warnings, diagnostics and errors are available
-in status. Current baselines are retained independently of ordinary event retention;
-change events use normal retention. Removed target IDs remain queryable as historical
-baselines, and are not automatically reported as fixed. Reusing an ID with a changed
-kind/path starts a new baseline. Prefer a new ID for a different system or artifact.</p>
-<p><code>vulnerable-package</code> priority scores: critical 90, high 75, medium 50, low 25,
-unknown 20. <code>known-exploited-vulnerability</code> scores 95. These are policy priorities,
-not CVSS scores or probabilities. <code>no_longer_detected</code> has no built-in alert score.
-Normal custom rules, <code>notify_score</code>, mute settings, pause, retries, rate limits,
-queue limits and manual failed-delivery requeue apply. Material changes have distinct
-cooldown fingerprints; different CVEs do not suppress one another. Webhooks contain
-a <code>vulnerability</code> object alongside the ordinary version-2 event fields.</p>
-<p>This stage does <strong>not</strong> associate vulnerable packages with live processes, establish
-internet exposure, prove a vulnerable function is reachable, distinguish installed
-from still-loaded library versions, or enforce CVE-specific kernel mitigations.
-Those require additional inventory and runtime evidence.</p>
-<h2 id="terminal-dashboard-and-cli">Terminal dashboard and CLI<a class="headerlink" href="#terminal-dashboard-and-cli" title="Permanent link">&para;</a></h2>
-<p>Press <strong>6</strong> for <strong>Vulnerabilities</strong>. <code>r</code> queues a cached scan; <code>u</code> queues sync plus
-scan. Arrow keys select findings, Enter opens details, arrow keys scroll details,
-<code>n</code> advances a page and <code>b</code> returns to the first page. <code>/</code> searches CVE, package,
-component, severity or target text; Escape clears the filter. The tab shows feed freshness,
-scan errors, partial/unknown coverage and fixed versions. Commands operate on the
-same owner-only daemon Unix socket as the rest of the dashboard.</p>
-<div class="highlight"><pre><span></span><code>./bin/rinlock<span class="w"> </span>vulnerabilities<span class="w"> </span>--action<span class="w"> </span>status
-./bin/rinlock<span class="w"> </span>vulnerabilities<span class="w"> </span>--action<span class="w"> </span>scan
-./bin/rinlock<span class="w"> </span>vulnerabilities<span class="w"> </span>--action<span class="w"> </span>sync
-./bin/rinlock<span class="w"> </span>vulnerabilities<span class="w"> </span>--kev
-./bin/rinlock<span class="w"> </span>vulnerabilities<span class="w"> </span>--target<span class="w"> </span>host<span class="w"> </span>--search<span class="w"> </span>HIGH<span class="w"> </span>--limit<span class="w"> </span><span class="m">100</span>
-./bin/rinlock<span class="w"> </span>vulnerabilities<span class="w"> </span>--after<span class="w"> </span>NEXT_CURSOR
+<p>Rule and kind filters allow at most 64 entries each. Lists use OR; different
+filters combine with AND. At least one unmuted event finding or attached incident
+must satisfy both the rule filter and <code>max(notify_score, min_score)</code>. An unrelated
+higher-scoring finding does not satisfy a selected rule's threshold. <code>kinds</code>
+filters the triggering event, even when eligibility comes from an incident.
+Empty lists allow all values. No matching destination produces an <code>unrouted</code>
+notification decision; evidence is still stored.</p>
+<p>For example, restrict a destination to shell detection on execution events:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shell-alerts"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ntfy"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"url_env"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RINLOCK_NTFY_URL"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"topic"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rinlock-shells"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"min_score"</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"rules"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"web-shell"</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"kinds"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"exec"</span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
-<p><code>--action init-config</code> prints defaults with an empty target list: add targets before
-validation. Scan commands acknowledge a queued job immediately; poll <code>--action
-status</code> for <code>busy=false</code>, <code>finished</code>, target errors and overall <code>error</code>. Only one job
-can be queued or running; a second request receives HTTP 409. Existing findings
-remain readable when scanning is disabled.</p>
-<p>API:</p>
+<p>Use actual rule IDs from your policy/event findings. Rule filters accept IDs up to 256 bytes without NUL or line breaks; kind filters
+use letters, digits, underscores or hyphens, up to 64 characters.</p>
+<h2 id="generic-webhook">Generic webhook<a class="headerlink" href="#generic-webhook" title="Permanent link">&para;</a></h2>
+<p>The adapter POSTs JSON to <code>url_env</code>, with <code>Content-Type: application/json</code>, a stable
+<code>Idempotency-Key</code>, and optional <code>Authorization: Bearer …</code>. The payload retains the
+existing top-level event fields and optional <code>incidents</code> array. It includes full
+event details; choose recipients with appropriate access to that evidence.</p>
+<p>HTTP and HTTPS are supported for local/self-hosted receivers; use HTTPS when
+traffic crosses an untrusted network. URL user/password credentials and fragments
+are rejected. Redirects are never followed, so secrets are not forwarded to a
+redirect target. Response bodies and credential values are excluded from recorded
+transport failures.</p>
+<h2 id="slack">Slack<a class="headerlink" href="#slack" title="Permanent link">&para;</a></h2>
+<p>Create a Slack app with Incoming Webhooks enabled, install it to the intended
+workspace/channel, then place the generated HTTPS webhook URL in the environment
+variable named by <code>url_env</code>. The URL is a secret. Omit <code>token_env</code>; channel and
+identity come from the Slack webhook configuration.</p>
+<p>Messages contain severity, host, process, event ID, path/connection when present,
+and bounded finding/incident summaries. Plain-text blocks prevent event text from
+invoking Slack mentions. Link/media previews are disabled. See
+<a href="https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/">Slack's incoming webhook setup</a>.</p>
+<h2 id="ntfy-including-self-hosting-and-ios">ntfy, including self-hosting and iOS<a class="headerlink" href="#ntfy-including-self-hosting-and-ios" title="Permanent link">&para;</a></h2>
+<p>Install an ntfy server or use an existing one. <code>url_env</code> must contain the <strong>server
+root URL</strong>, such as <code>https://ntfy.example.org</code>, without a topic, path prefix or
+query. Set <code>topic</code> separately. The adapter POSTs ntfy's JSON publishing format to
+the server root. Give its token permission to publish to that topic and give
+subscribers permission to read it. Omit <code>token_env</code> only if the server permits
+unauthenticated publishing. Keep security topics private.</p>
+<p>On the Android or iOS ntfy app, subscribe to the same server and topic. Scores
+90–100 map to priority 5, 70–89 to 4, and lower eligible scores to 3. Messages are
+plain text with a shield tag and are bounded to fit the default 4 KiB publish
+request limit; inspect the stored event for full evidence. See <a href="https://docs.ntfy.sh/publish/">publishing</a> and
+<a href="https://docs.ntfy.sh/subscribe/phone/">mobile subscriptions</a>.</p>
+<p>For prompt <strong>iOS</strong> delivery from a self-hosted server, configure the ntfy server:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">base-url</span><span class="p">:</span><span class="w"> </span><span class="s">"https://ntfy.example.org"</span>
+<span class="nt">upstream-base-url</span><span class="p">:</span><span class="w"> </span><span class="s">"https://ntfy.sh"</span>
+</code></pre></div>
+<p>These settings belong to <strong>ntfy</strong>, not RINLock. The upstream receives a message ID
+and hashed topic URL to wake the app through Firebase/Apple push. The app then
+fetches the actual message from your server, which must be reachable from the
+phone. Without this upstream setting, iOS delivery can be significantly delayed.
+See <a href="https://docs.ntfy.sh/config/#ios-instant-notifications">ntfy's iOS delivery explanation</a>.</p>
+<h2 id="smtp-email">SMTP email<a class="headerlink" href="#smtp-email" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"destinations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"email"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"smtp"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"min_score"</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"smtp"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"smtp.example.org:587"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"tls"</span><span class="p">:</span><span class="w"> </span><span class="s2">"starttls"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"from"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rinlock@example.org"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"to"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"security@example.org"</span><span class="p">,</span><span class="w"> </span><span class="s2">"oncall@example.org"</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">"username_env"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RINLOCK_SMTP_USERNAME"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"password_env"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RINLOCK_SMTP_PASSWORD"</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>SMTP field</th>
+<th>Configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>address</code></td>
+<td>Required <code>host:port</code>; use <code>[IPv6]:port</code> for IPv6 literals</td>
+</tr>
+<tr>
+<td><code>tls</code></td>
+<td>Required <code>starttls</code> for an explicit upgrade, or <code>tls</code> for encryption immediately on connection</td>
+</tr>
+<tr>
+<td><code>from</code></td>
+<td>One plain sender email address, without a display name</td>
+</tr>
+<tr>
+<td><code>to</code></td>
+<td>1–20 plain recipient email addresses</td>
+</tr>
+<tr>
+<td><code>username_env</code>, <code>password_env</code></td>
+<td>Set both for SMTP AUTH PLAIN, or omit both for a relay that permits unauthenticated submission over TLS</td>
+</tr>
+</tbody>
+</table>
+<p>For implicit TLS, use your provider's port (commonly 465) and <code>"tls": "tls"</code>.
+For STARTTLS, use its submission port (commonly 587) and <code>"tls": "starttls"</code>.
+Authentication occurs only after TLS. The adapter requires TLS 1.2 or later,
+verifies the hostname and system certificate trust, and refuses plaintext
+fallback. For a private CA, install its certificate in the daemon's trusted
+system certificate store. There is no certificate-verification bypass.</p>
+<p>Use a provider-supported SMTP password/app password. OAuth/XOAUTH2, attachments,
+HTML templates, client certificates and per-recipient tracking are not supported.
+The sender must be authorized by your relay; configure the domain's delivery
+requirements with your mail provider. All recipients are visible in <code>To</code>; use
+separate destinations when recipient isolation is needed.</p>
+<p>Email includes a UTF-8 plain-text summary, severity/host subject and stable
+<code>Message-ID</code>. The relay must accept every recipient before DATA is sent. SMTP 4xx
+and connection/TLS failures retry within the attempt budget; 5xx and missing
+STARTTLS fail immediately. The whole operation has a 10-second timeout. Once the
+relay acknowledges DATA, a later QUIT failure does not trigger a resend. Relay
+acceptance does not track eventual bounces or inbox delivery. A lost DATA reply
+or daemon crash may still cause duplicate mail; <code>Message-ID</code> is not a guarantee
+that a receiving mail system deduplicates it.</p>
+<h2 id="packaged-systemd-deployment">Packaged systemd deployment<a class="headerlink" href="#packaged-systemd-deployment" title="Permanent link">&para;</a></h2>
+<p>The installer ships configuration and environment examples without enabling them:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>cp<span class="w"> </span>/etc/rinlock/notifications-example.json<span class="w"> </span>/etc/rinlock/notifications.json
+sudo<span class="w"> </span>install<span class="w"> </span>-m<span class="w"> </span><span class="m">0600</span><span class="w"> </span>-o<span class="w"> </span>root<span class="w"> </span>-g<span class="w"> </span>root<span class="w"> </span>/etc/rinlock/notifications.env.example<span class="w"> </span>/etc/rinlock/notifications.env
+<span class="c1"># Edit both files locally; remove destinations you do not use.</span>
+rinlock<span class="w"> </span>destinations<span class="w"> </span>--config<span class="w"> </span>/etc/rinlock/notifications.json
+sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/systemd/system/rinlock.service.d
+sudo<span class="w"> </span>cp<span class="w"> </span>/etc/rinlock/notifications.conf.example<span class="w"> </span>/etc/systemd/system/rinlock.service.d/notifications.conf
+sudo<span class="w"> </span>systemctl<span class="w"> </span>daemon-reload
+sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>rinlock.service
+</code></pre></div>
+<p>The <a href="../packaging/notifications.conf.example">drop-in</a> loads
+<code>/etc/rinlock/notifications.env</code>, clears the legacy webhook environment source,
+and passes <code>--notification-config</code>. Keep the environment file root-owned and
+mode 0600; systemd reads it before switching to the service account.</p>
+<p>If vulnerability scanning is also enabled, combine <code>--notification-config</code> and
+<code>--vulnerability-config</code> in <strong>one</strong> <code>ExecStart</code> override. Two separate drop-ins
+that each replace <code>ExecStart</code> do not combine their flags. Preserve your existing
+custom environment files when adapting the example. Service environment values
+are not automatically available to commands run from an interactive shell.</p>
+<h2 id="queue-operations-and-migration">Queue operations and migration<a class="headerlink" href="#queue-operations-and-migration" title="Permanent link">&para;</a></h2>
+<p>The event, incidents, cooldown and all matching destination records commit in one
+transaction. Cooldown is shared per alert before fan-out; it is not per recipient.
+Global <code>mute_until</code>/<code>muted_rules</code> affect new enqueue decisions. Existing queued
+records retain their destination and payload when filters or policy change.</p>
 <ul>
-<li><code>GET /v1/vulnerabilities/status</code>: scanner job, feeds and target scan summaries.</li>
-<li><code>GET /v1/vulnerabilities?target=...&amp;search=...&amp;kev=true&amp;limit=100&amp;after=...</code>:
-  <code>{items, next}</code> sorted by stable finding ID; limit 1–1000. Pages reflect current
-  state, not an immutable scan snapshot, so a concurrent rescan can change pagination.</li>
-<li><code>PUT /v1/vulnerabilities/job</code> with <code>{"action":"scan"}</code> (or <code>sync</code>/<code>refresh</code>):
-  HTTP 200 acknowledges scheduling, <strong>not completion</strong>. Requests cannot supply paths,
-  executable names or arbitrary arguments. Configuration stays local and startup-only.</li>
-<li><code>GET /v1/status</code> also contains the <code>vulnerabilities</code> status object.</li>
+<li>Each destination has its own worker, attempt budget, backoff and persisted
+  fixed-UTC-minute rate budget. The configured <code>rate_per_minute</code> applies to each
+  destination; total traffic can be that rate times the number of destinations.</li>
+<li>Global <code>max_pending</code> counts delivery records across all destinations. If the
+  whole fan-out will not fit, all matching records become failed with a queue-full
+  reason. The event is retained and cooldown still applies.</li>
+<li>Attempts are reserved before network I/O with a 30-second crash lease. HTTP
+  requests time out after 5 seconds. HTTP 408/429/5xx and transport failures retry;
+  other 3xx/4xx fail permanently. <code>Retry-After</code> is capped at 24 hours.</li>
+<li>Delivery is at least once. Each new HTTP destination receives a namespaced,
+  stable idempotency key; providers need not honor it. Manual retries preserve
+  that key. Completed/failed history is bounded by <code>history_days</code>.</li>
 </ul>
-<h2 id="installed-service">Installed service<a class="headerlink" href="#installed-service" title="Permanent link">&para;</a></h2>
-<p>The installer copies example config and an <strong>inactive</strong>
-<a href="../packaging/vulnerabilities.conf.example">vulnerability drop-in</a>. It does not install
-Trivy, enable scanning, change existing vulnerability configuration, or relax service
-hardening. Copy/edit the config as <code>/etc/rinlock/vulnerabilities.json</code>, install the
-scanner, then enable the reviewed drop-in and restart the daemon.</p>
-<p>The scanner inherits <code>rinlock.service</code>'s unprivileged account and restricted
-filesystem view. Hidden home directories, unreadable files, private <code>/tmp</code> and other
-restrictions affect coverage. A scan of <code>/</code> is a scan of that service's visible root,
-not guaranteed complete host coverage. Prefer explicit readable exports and application
-paths; do not grant root or mount the Docker socket merely to hide coverage gaps.</p>
-<h2 id="validation">Validation<a class="headerlink" href="#validation" title="Permanent link">&para;</a></h2>
-<p><code>make test</code> includes fixtures for parsing, KEV changes and invalid feeds, atomic
-rollback, restart deduplication, per-finding cooldowns, asynchronous webhook delivery,
-subprocess environment/argument isolation, process-group cancellation, API controls,
-scanner-failure isolation from runtime collection, and terminal navigation/sanitization.
-These tests require local sockets, but no internet or installed scanner.</p>
-<p>For a real scanner test, sync a dedicated Trivy/KEV cache, then run:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">RINLOCK_TRIVY_PATH</span><span class="o">=</span>/absolute/path/to/trivy<span class="w"> </span><span class="se">\</span>
-<span class="nv">RINLOCK_TRIVY_CACHE</span><span class="o">=</span>/absolute/path/to/cache<span class="w"> </span>make<span class="w"> </span>test-vulnerabilities-live
+<div class="highlight"><pre><span></span><code>rinlock<span class="w"> </span>deliveries<span class="w"> </span>--socket<span class="w"> </span>/run/rinlock/rinlock.sock<span class="w"> </span>--state<span class="w"> </span>failed
+rinlock<span class="w"> </span>deliveries<span class="w"> </span>--socket<span class="w"> </span>/run/rinlock/rinlock.sock<span class="w"> </span>--state<span class="w"> </span>pending<span class="w"> </span>--before<span class="w"> </span><span class="m">42</span>
+rinlock<span class="w"> </span>deliveries<span class="w"> </span>--socket<span class="w"> </span>/run/rinlock/rinlock.sock<span class="w"> </span>--retry<span class="w"> </span><span class="m">42</span>
+rinlock<span class="w"> </span>notifications<span class="w"> </span>--socket<span class="w"> </span>/run/rinlock/rinlock.sock<span class="w"> </span>--pause<span class="w"> </span><span class="m">600</span>
+rinlock<span class="w"> </span>notifications<span class="w"> </span>--socket<span class="w"> </span>/run/rinlock/rinlock.sock<span class="w"> </span>--pause<span class="w"> </span><span class="m">0</span>
 </code></pre></div>
-<p>The opt-in test scans a disposable manifest for lodash 4.17.20, requires the known
-CVE-2021-23337 match and fixed version, and checks repeated-scan deduplication. It
-never installs/runs vulnerable application code and does not scan the host.</p>
-<p>For end-to-end daemon/CLI validation and an optional actual terminal screenshot:</p>
-<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>scripts/vulnerability-smoke.py<span class="w"> </span>--trivy<span class="w"> </span>/absolute/path/to/trivy<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--cache<span class="w"> </span>/absolute/path/to/cache<span class="w"> </span>--report<span class="w"> </span>/tmp/vulnerability-validation.json
-<span class="c1"># Add --screenshot with pexpect, pyte and Pillow installed to update the README image.</span>
-</code></pre></div>
-<p>This smoke test performs a real startup sync, checks fresh feeds, scans a disposable
-manifest, queues another scan over the CLI, checks deduplication, and shuts down its
-temporary daemon. Runtime events are synthetic; vulnerability results are real.</p>
+<p>Use the top-level delivery <code>id</code> for <code>--retry</code>, <code>--before</code>, and the API retry path.
+<code>event.id</code> identifies the underlying evidence; multiple delivery IDs can share it.
+<code>destination</code> identifies the configured recipient. A failed record can be requeued
+only when queue capacity remains; with active destinations configured, its
+destination must also be present. Pause affects
+all workers; it cannot recall a message already in flight.</p>
+<p>Existing <code>RINLOCK_WEBHOOK_URL</code>/<code>RINLOCK_WEBHOOK_TOKEN</code> deployments continue working
+without a notification config. Their old queued records remain readable, with
+an empty/omitted destination and the legacy event-based HTTP idempotency key.
+Do not combine that legacy URL with <code>--notification-config</code>; startup rejects it.</p>
+<p>Drain the legacy backlog before switching to named destinations. When starting
+with notifications enabled, queued records with IDs absent from the new config
+become failed with <code>destination is not configured</code>, including legacy records
+when switching to named destinations. Restore the original configuration to
+retry them. Starting with no notification destinations leaves backlog suspended.</p>
+<p>Do not reuse a destination ID for a different recipient: queued records resolve
+that ID to its current endpoint and credentials after restart. Renaming an ID
+means removing the old destination. Back up the database before upgrading;
+older binaries assume one delivery per event and must not write a database after
+multi-destination delivery has been used.</p>
 
 
 
@@ -1532,7 +1601,7 @@ temporary daemon. Runtime events are synthetic; vulnerability results are real.<
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="prevention.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Runtime prevention">
+          <a href="configuration.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Configuration">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1542,20 +1611,20 @@ temporary daemon. Runtime events are synthetic; vulnerability results are real.<
                 Previous
               </span>
               <div class="md-ellipsis">
-                Runtime prevention
+                Configuration
               </div>
             </div>
           </a>
         
         
           
-          <a href="agents.html" class="md-footer__link md-footer__link--next" aria-label="Next: Agent integration">
+          <a href="reference.html" class="md-footer__link md-footer__link--next" aria-label="Next: CLI and API">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Agent integration
+                CLI and API
               </div>
             </div>
             <div class="md-footer__button md-icon">

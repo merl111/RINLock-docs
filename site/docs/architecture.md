@@ -23,7 +23,9 @@ flowchart TD
   U --> D[Unprivileged daemon]
   D --> E[Detection scoring and correlation]
   E --> B[bbolt events, incidents and outbox]
-  B --> N[Async webhook worker]
+  B --> N[Independent destination workers]
+  N --> HTTP[Webhook, Slack and ntfy]
+  N --> SMTP[SMTP email over TLS]
   B --> API[Local HTTP over Unix socket]
   API --> UI[CLI and terminal dashboard]
 ```
@@ -67,12 +69,14 @@ errors stop the daemon rather than silently continuing without persistence.
 
 ## Notification delivery
 
-A separate worker reserves attempts before making HTTP requests. The persistent
-outbox survives daemon restart; delivery has a stable idempotency key, bounded
-attempts, cooldown, rate/queue limits, exponential retries, terminal failure
-history and manual retry. A receiver should deduplicate idempotency keys because
-a crash after HTTP success but before acknowledgement can cause another attempt.
-No kernel operation waits on HTTP or database persistence.
+Each configured destination has a worker that reserves attempts before network
+I/O. The transaction records matching destination IDs alongside independent
+delivery IDs, so one failed service does not block another. The persistent outbox
+survives restart and supports stable idempotency keys, bounded attempts, cooldown,
+per-destination rate limits, a shared queue limit, retries and failure history.
+HTTP receivers should deduplicate keys; SMTP uses a stable Message-ID, but neither
+transport guarantees exactly-once delivery. No kernel operation waits on HTTP,
+SMTP or database persistence. See [notification configuration](notifications.md).
 
 ## Privilege boundary and prevention
 
@@ -101,7 +105,7 @@ See the [prevention guide](prevention.md) for exact semantics and coverage limit
 - `internal/daemon`: lifecycle, queues and maintenance.
 - `internal/policy`, `internal/detection`: matching, scoring and policy revisions.
 - `internal/store`: events, correlation, review state, outbox and retention.
-- `internal/notify`: HTTP delivery and retry behavior.
+- `internal/notify`: webhook, Slack, ntfy and SMTP adapters, configuration and retries.
 - `internal/api`, `internal/tui`: local operations and dashboard.
 
 ## Optional advisory scanning worker

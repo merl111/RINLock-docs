@@ -587,6 +587,34 @@
   
   
     <li class="md-nav__item">
+      <a href="docs/notifications.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="docs/reference.html" class="md-nav__link">
         
   
@@ -1260,7 +1288,7 @@
     <a href="getting-started.md">Read as Markdown</a>
     <a href="llms.txt">Agent index</a>
     <a href="llms-full.txt">Full context</a>
-    <span>v0.5.0-dev · bb1bf41</span>
+    <span>v0.5.0-dev · 178374c</span>
   </div>
   
   
@@ -1283,7 +1311,7 @@ by default and its <a href="docs/prevention.html">scope and failure behavior</a>
 <p><a href="https://merl111.github.io/RINLock-docs/">Documentation website</a> ·
 <a href="docs/agents.html">Agent docs</a> · <a href="https://merl111.github.io/RINLock-docs/llms.txt">llms.txt</a> ·
 <a href="docs/index.html">Local guides</a> · <a href="docs/configuration.html">Configuration</a> ·
-<a href="docs/prevention.html">Prevention</a> · <a href="docs/vulnerabilities.html">Vulnerabilities</a> · <a href="docs/stage-3.html">Operations</a> ·
+<a href="docs/notifications.html">Notifications</a> · <a href="docs/prevention.html">Prevention</a> · <a href="docs/vulnerabilities.html">Vulnerabilities</a> · <a href="docs/stage-3.html">Operations</a> ·
 <a href="docs/releasing.html">Releases</a> · <a href="SECURITY.html">Security</a></p>
 <h2 id="try-the-dashboard">Try the dashboard<a class="headerlink" href="#try-the-dashboard" title="Permanent link">&para;</a></h2>
 <p>Build requirements: Linux amd64, Go 1.24+, Clang with a BPF backend, Linux
@@ -1298,7 +1326,7 @@ own daemon and temporary files.</p>
 <p><img alt="Event investigation in the running synthetic demo" src="docs/images/dashboard-events.png" /></p>
 <p><img alt="Correlated incident evidence in the running synthetic demo" src="docs/images/dashboard-incidents.png" /></p>
 <p>Screenshots are captured from the application using
-<a href="https://github.com/merl111/RINLock/blob/bb1bf41f29f91d3fb85489c154e0032c42496258/scripts/screenshots.py"><code>scripts/screenshots.py</code></a>, with synthetic fixtures.</p>
+<a href="https://github.com/merl111/RINLock/blob/178374cd5700080ab59a8d704ec1a2aaab73ca84/scripts/screenshots.py"><code>scripts/screenshots.py</code></a>, with synthetic fixtures.</p>
 <h2 id="what-it-does">What it does<a class="headerlink" href="#what-it-does" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Behavioral detection:</strong> web-server shells, unexpected credential-file opens,
@@ -1307,7 +1335,8 @@ own daemon and temporary files.</p>
   account changes, and optional SSH/PAM journal observations.</li>
 <li><strong>Evidence and incidents:</strong> versioned event identities, explainable scores,
   correlated activity, review notes and automatic reopening on new evidence.</li>
-<li><strong>Async notifications:</strong> durable webhook outbox, cooldowns, retries, rate limits,
+<li><strong>Async notifications:</strong> webhook, Slack, ntfy and SMTP email adapters with
+  destination routing, independent retries, durable queues, cooldowns, rate limits,
   pause controls, failure history and manual requeue.</li>
 <li><strong>Operations:</strong> separate privileged collector and unprivileged daemon, health
   and loss reporting, retention, capacity admission checks and offline compaction.</li>
@@ -1360,7 +1389,9 @@ python3<span class="w"> </span>scripts/check-package.py
 <p>The archive includes a static binary, both BPF objects, configuration examples,
 installer, systemd units and documentation. Installation does not enable services
 or prevention. Follow the <a href="docs/stage-3.html">deployment guide</a> for the <code>rinlock</code>
-service account, protected sockets, webhook environment and operational checks.</p>
+service account, protected sockets, notification environment and operational checks.
+Configure <a href="docs/notifications.html">SMTP email, Slack, webhooks or self-hosted ntfy</a>,
+including mobile setup for iOS and Android.</p>
 <p>For development, <code>sudo ./bin/rinlock doctor --probe</code> tests native attachments.
 Production collection uses the separate root collector and unprivileged daemon.
 Do not expose their Unix APIs as unauthenticated network services.</p>
@@ -1388,7 +1419,7 @@ Runtime changes reset to the root-owned startup policy when the collector restar
 <p>The container suite exercises real kernel denial, native collection, reattachment,
 audit-buffer overflow and collector/daemon integration. It uses temporary test
 cgroups and removes the test container afterwards.</p>
-<p>Version tags trigger the <a href="https://github.com/merl111/RINLock/blob/bb1bf41f29f91d3fb85489c154e0032c42496258/.github/workflows/release.yml">release workflow</a>, producing
+<p>Version tags trigger the <a href="https://github.com/merl111/RINLock/blob/178374cd5700080ab59a8d704ec1a2aaab73ca84/.github/workflows/release.yml">release workflow</a>, producing
 Linux amd64 binaries, checksums and a corresponding-source archive with dependency
 sources/licenses. Major-zero versions are prereleases. See
 <a href="docs/releasing.html">testing and release instructions</a>.</p>

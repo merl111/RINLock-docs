@@ -2,7 +2,7 @@
 
 > Linux runtime detection, explicit eBPF prevention, and vulnerability scanning. Terminal dashboard and local Unix API.
 
-Version: 0.5.0-dev. Source commit: bb1bf41f29f91d3fb85489c154e0032c42496258. This documentation is a published development snapshot. Source repository is private.
+Version: 0.5.0-dev. Source commit: 178374cd5700080ab59a8d704ec1a2aaab73ca84. This documentation is a published development snapshot. Source repository is private.
 
 
 ---
@@ -111,7 +111,7 @@ by default and its [scope and failure behavior](https://merl111.github.io/RINLoc
 [Documentation website](https://merl111.github.io/RINLock-docs/) ·
 [Agent docs](https://merl111.github.io/RINLock-docs/docs/agents.md) · [llms.txt](https://merl111.github.io/RINLock-docs/llms.txt) ·
 [Local guides](https://merl111.github.io/RINLock-docs/docs/index.md) · [Configuration](https://merl111.github.io/RINLock-docs/docs/configuration.md) ·
-[Prevention](https://merl111.github.io/RINLock-docs/docs/prevention.md) · [Vulnerabilities](https://merl111.github.io/RINLock-docs/docs/vulnerabilities.md) · [Operations](https://merl111.github.io/RINLock-docs/docs/stage-3.md) ·
+[Notifications](https://merl111.github.io/RINLock-docs/docs/notifications.md) · [Prevention](https://merl111.github.io/RINLock-docs/docs/prevention.md) · [Vulnerabilities](https://merl111.github.io/RINLock-docs/docs/vulnerabilities.md) · [Operations](https://merl111.github.io/RINLock-docs/docs/stage-3.md) ·
 [Releases](https://merl111.github.io/RINLock-docs/docs/releasing.md) · [Security](https://merl111.github.io/RINLock-docs/SECURITY.md)
 
 ## Try the dashboard
@@ -134,7 +134,7 @@ own daemon and temporary files.
 ![Correlated incident evidence in the running synthetic demo](https://merl111.github.io/RINLock-docs/docs/images/dashboard-incidents.png)
 
 Screenshots are captured from the application using
-[`scripts/screenshots.py`](https://github.com/merl111/RINLock/blob/bb1bf41f29f91d3fb85489c154e0032c42496258/scripts/screenshots.py), with synthetic fixtures.
+[`scripts/screenshots.py`](https://github.com/merl111/RINLock/blob/178374cd5700080ab59a8d704ec1a2aaab73ca84/scripts/screenshots.py), with synthetic fixtures.
 
 ## What it does
 
@@ -144,7 +144,8 @@ Screenshots are captured from the application using
   account changes, and optional SSH/PAM journal observations.
 - **Evidence and incidents:** versioned event identities, explainable scores,
   correlated activity, review notes and automatic reopening on new evidence.
-- **Async notifications:** durable webhook outbox, cooldowns, retries, rate limits,
+- **Async notifications:** webhook, Slack, ntfy and SMTP email adapters with
+  destination routing, independent retries, durable queues, cooldowns, rate limits,
   pause controls, failure history and manual requeue.
 - **Operations:** separate privileged collector and unprivileged daemon, health
   and loss reporting, retention, capacity admission checks and offline compaction.
@@ -217,7 +218,9 @@ python3 scripts/check-package.py
 The archive includes a static binary, both BPF objects, configuration examples,
 installer, systemd units and documentation. Installation does not enable services
 or prevention. Follow the [deployment guide](https://merl111.github.io/RINLock-docs/docs/stage-3.md) for the `rinlock`
-service account, protected sockets, webhook environment and operational checks.
+service account, protected sockets, notification environment and operational checks.
+Configure [SMTP email, Slack, webhooks or self-hosted ntfy](https://merl111.github.io/RINLock-docs/docs/notifications.md),
+including mobile setup for iOS and Android.
 
 For development, `sudo ./bin/rinlock doctor --probe` tests native attachments.
 Production collection uses the separate root collector and unprivileged daemon.
@@ -259,7 +262,7 @@ The container suite exercises real kernel denial, native collection, reattachmen
 audit-buffer overflow and collector/daemon integration. It uses temporary test
 cgroups and removes the test container afterwards.
 
-Version tags trigger the [release workflow](https://github.com/merl111/RINLock/blob/bb1bf41f29f91d3fb85489c154e0032c42496258/.github/workflows/release.yml), producing
+Version tags trigger the [release workflow](https://github.com/merl111/RINLock/blob/178374cd5700080ab59a8d704ec1a2aaab73ca84/.github/workflows/release.yml), producing
 Linux amd64 binaries, checksums and a corresponding-source archive with dependency
 sources/licenses. Major-zero versions are prereleases. See
 [testing and release instructions](https://merl111.github.io/RINLock-docs/docs/releasing.md).
@@ -302,7 +305,9 @@ flowchart TD
   U --> D[Unprivileged daemon]
   D --> E[Detection scoring and correlation]
   E --> B[bbolt events, incidents and outbox]
-  B --> N[Async webhook worker]
+  B --> N[Independent destination workers]
+  N --> HTTP[Webhook, Slack and ntfy]
+  N --> SMTP[SMTP email over TLS]
   B --> API[Local HTTP over Unix socket]
   API --> UI[CLI and terminal dashboard]
 ```
@@ -346,12 +351,14 @@ errors stop the daemon rather than silently continuing without persistence.
 
 ## Notification delivery
 
-A separate worker reserves attempts before making HTTP requests. The persistent
-outbox survives daemon restart; delivery has a stable idempotency key, bounded
-attempts, cooldown, rate/queue limits, exponential retries, terminal failure
-history and manual retry. A receiver should deduplicate idempotency keys because
-a crash after HTTP success but before acknowledgement can cause another attempt.
-No kernel operation waits on HTTP or database persistence.
+Each configured destination has a worker that reserves attempts before network
+I/O. The transaction records matching destination IDs alongside independent
+delivery IDs, so one failed service does not block another. The persistent outbox
+survives restart and supports stable idempotency keys, bounded attempts, cooldown,
+per-destination rate limits, a shared queue limit, retries and failure history.
+HTTP receivers should deduplicate keys; SMTP uses a stable Message-ID, but neither
+transport guarantees exactly-once delivery. No kernel operation waits on HTTP,
+SMTP or database persistence. See [notification configuration](https://merl111.github.io/RINLock-docs/docs/notifications.md).
 
 ## Privilege boundary and prevention
 
@@ -380,7 +387,7 @@ See the [prevention guide](https://merl111.github.io/RINLock-docs/docs/preventio
 - `internal/daemon`: lifecycle, queues and maintenance.
 - `internal/policy`, `internal/detection`: matching, scoring and policy revisions.
 - `internal/store`: events, correlation, review state, outbox and retention.
-- `internal/notify`: HTTP delivery and retry behavior.
+- `internal/notify`: webhook, Slack, ntfy and SMTP adapters, configuration and retries.
 - `internal/api`, `internal/tui`: local operations and dashboard.
 
 ## Optional advisory scanning worker
@@ -463,9 +470,11 @@ observation count can continue increasing.
 
 ## Notifications
 
-Configure the destination in `RINLOCK_WEBHOOK_URL`, and optionally a bearer token
-in `RINLOCK_WEBHOOK_TOKEN`. Packaged deployment reads an operator-owned environment
-file. Do not place tokens in rules, process arguments or committed files.
+Configure webhook, Slack, ntfy and SMTP destinations with the separate startup
+file `serve --notification-config FILE`. See [notification setup](https://merl111.github.io/RINLock-docs/docs/notifications.md)
+for routing, SMTP TLS/authentication, mobile apps and systemd examples. Existing
+`RINLOCK_WEBHOOK_URL` and optional `RINLOCK_WEBHOOK_TOKEN` deployments remain
+supported without this file. Credentials belong in the environment, not rules.
 
 | `notifications` field | Default | Meaning |
 | --- | --- | --- |
@@ -473,14 +482,15 @@ file. Do not place tokens in rules, process arguments or committed files.
 | `muted_rules` | [] | Findings excluded from enqueue eligibility |
 | `mute_until` | unset | Do not enqueue new notifications before this RFC3339 time |
 | `max_attempts` | 10 | Maximum reserved attempts per queued delivery |
-| `max_pending` | 10000 | Maximum pending deliveries |
-| `rate_per_minute` | 60 | Reservations per fixed UTC minute |
+| `max_pending` | 10000 | Maximum pending deliveries across all destinations |
+| `rate_per_minute` | 60 | Reservations per destination per fixed UTC minute |
 | `history_days` | 30 | Completed/failed delivery history retention |
 
 Higher eligible scores can bypass a lower-score cooldown. Muting affects new
 enqueue decisions; `rinlock notifications --pause SECONDS` pauses existing backlog
 delivery, and `--pause 0` resumes it. Retryable responses include 408, 429, 5xx and
-transport errors. Redirects are not followed; other 3xx/4xx are terminal failures.
+transport errors. SMTP 4xx/transport failures retry; 5xx and missing STARTTLS
+fail immediately. Redirects are not followed; other 3xx/4xx are terminal failures.
 Retry-After is bounded to 24 hours. The durable outbox provides retry/deduplication
 support, not exactly-once delivery.
 
@@ -506,6 +516,272 @@ compaction and verified replacement as described in [operations](https://merl111
 The optional `serve --vulnerability-config FILE` is a separate startup-only format.
 See [vulnerabilities.md](https://merl111.github.io/RINLock-docs/docs/vulnerabilities.md) for every field, coverage limitations,
 KEV updates and notification scores. It is not part of hot-reloaded detection policy.
+
+
+---
+
+## Notification destinations
+
+Source: https://merl111.github.io/RINLock-docs/docs/notifications.md
+
+# Notification destinations
+
+RINLock supports generic HTTP webhooks, Slack incoming webhooks, ntfy mobile push,
+and SMTP email. Destinations are opt-in. Up to 16 destinations can receive the same
+alert, each with independent attempts, backoff and a persistent delivery record.
+A slow destination does not block another destination's worker or event ingestion.
+
+## Quick setup
+
+Copy [notifications-example.json](https://merl111.github.io/RINLock-docs/configs/notifications-example.json), remove
+unwanted destinations, and supply the referenced environment variables. URLs and
+authentication secrets are read from the daemon's environment at startup; the
+JSON stores their variable names. Do not commit live credentials or secret URLs.
+
+```sh
+rinlock destinations --config notifications.json
+rinlock serve --config rules.json --notification-config notifications.json
+```
+
+The first command validates JSON and field constraints locally. It does not read
+credential values, connect to providers, or require a running daemon. `serve`
+resolves every configured variable and refuses invalid/missing values before
+starting collection. Destination configuration and credentials require a daemon
+restart; `rinlock policy` reloads detection policy only.
+
+Send an explicit test to one destination, using the same environment as the daemon:
+
+```sh
+rinlock destinations --config notifications.json --action test --destination phone
+```
+
+**This sends a real message.** It is labelled `notification_test`, with score 90
+and an explanation that no incident was detected. It bypasses routing, mutes,
+pause, cooldown, the database and automatic retries. Other destinations' secrets
+are not required for this test. A zero exit status means the provider accepted
+the message, not that a device displayed it or someone read it.
+
+## Common destination fields
+
+| Field | Meaning |
+| --- | --- |
+| `id` | Stable unique ID; 1–64 letters, digits, underscores or hyphens, starting with a letter/digit |
+| `type` | `webhook`, `slack`, `ntfy`, or `smtp` |
+| `min_score` | Optional 0–100 minimum; defaults to 0 but cannot lower global `notify_score` |
+| `rules` | Optional rule-ID allowlist, including correlation rule IDs |
+| `kinds` | Optional event-kind allowlist, such as `exec`, `prevention`, `vulnerability` |
+| `url_env` | HTTP types: environment variable containing the destination URL |
+| `token_env` | Optional bearer token for webhook/ntfy; omit when unused |
+| `topic` | Required ntfy topic, with the same character/length limits as `id` |
+| `smtp` | Required SMTP settings object, described below |
+
+Rule and kind filters allow at most 64 entries each. Lists use OR; different
+filters combine with AND. At least one unmuted event finding or attached incident
+must satisfy both the rule filter and `max(notify_score, min_score)`. An unrelated
+higher-scoring finding does not satisfy a selected rule's threshold. `kinds`
+filters the triggering event, even when eligibility comes from an incident.
+Empty lists allow all values. No matching destination produces an `unrouted`
+notification decision; evidence is still stored.
+
+For example, restrict a destination to shell detection on execution events:
+
+```json
+{
+  "id": "shell-alerts",
+  "type": "ntfy",
+  "url_env": "RINLOCK_NTFY_URL",
+  "topic": "rinlock-shells",
+  "min_score": 90,
+  "rules": ["web-shell"],
+  "kinds": ["exec"]
+}
+```
+
+Use actual rule IDs from your policy/event findings. Rule filters accept IDs up to 256 bytes without NUL or line breaks; kind filters
+use letters, digits, underscores or hyphens, up to 64 characters.
+
+## Generic webhook
+
+The adapter POSTs JSON to `url_env`, with `Content-Type: application/json`, a stable
+`Idempotency-Key`, and optional `Authorization: Bearer …`. The payload retains the
+existing top-level event fields and optional `incidents` array. It includes full
+event details; choose recipients with appropriate access to that evidence.
+
+HTTP and HTTPS are supported for local/self-hosted receivers; use HTTPS when
+traffic crosses an untrusted network. URL user/password credentials and fragments
+are rejected. Redirects are never followed, so secrets are not forwarded to a
+redirect target. Response bodies and credential values are excluded from recorded
+transport failures.
+
+## Slack
+
+Create a Slack app with Incoming Webhooks enabled, install it to the intended
+workspace/channel, then place the generated HTTPS webhook URL in the environment
+variable named by `url_env`. The URL is a secret. Omit `token_env`; channel and
+identity come from the Slack webhook configuration.
+
+Messages contain severity, host, process, event ID, path/connection when present,
+and bounded finding/incident summaries. Plain-text blocks prevent event text from
+invoking Slack mentions. Link/media previews are disabled. See
+[Slack's incoming webhook setup](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/).
+
+## ntfy, including self-hosting and iOS
+
+Install an ntfy server or use an existing one. `url_env` must contain the **server
+root URL**, such as `https://ntfy.example.org`, without a topic, path prefix or
+query. Set `topic` separately. The adapter POSTs ntfy's JSON publishing format to
+the server root. Give its token permission to publish to that topic and give
+subscribers permission to read it. Omit `token_env` only if the server permits
+unauthenticated publishing. Keep security topics private.
+
+On the Android or iOS ntfy app, subscribe to the same server and topic. Scores
+90–100 map to priority 5, 70–89 to 4, and lower eligible scores to 3. Messages are
+plain text with a shield tag and are bounded to fit the default 4 KiB publish
+request limit; inspect the stored event for full evidence. See [publishing](https://docs.ntfy.sh/publish/) and
+[mobile subscriptions](https://docs.ntfy.sh/subscribe/phone/).
+
+For prompt **iOS** delivery from a self-hosted server, configure the ntfy server:
+
+```yaml
+base-url: "https://ntfy.example.org"
+upstream-base-url: "https://ntfy.sh"
+```
+
+These settings belong to **ntfy**, not RINLock. The upstream receives a message ID
+and hashed topic URL to wake the app through Firebase/Apple push. The app then
+fetches the actual message from your server, which must be reachable from the
+phone. Without this upstream setting, iOS delivery can be significantly delayed.
+See [ntfy's iOS delivery explanation](https://docs.ntfy.sh/config/#ios-instant-notifications).
+
+## SMTP email
+
+```json
+{
+  "destinations": [
+    {
+      "id": "email",
+      "type": "smtp",
+      "min_score": 90,
+      "smtp": {
+        "address": "smtp.example.org:587",
+        "tls": "starttls",
+        "from": "rinlock@example.org",
+        "to": ["security@example.org", "oncall@example.org"],
+        "username_env": "RINLOCK_SMTP_USERNAME",
+        "password_env": "RINLOCK_SMTP_PASSWORD"
+      }
+    }
+  ]
+}
+```
+
+| SMTP field | Configuration |
+| --- | --- |
+| `address` | Required `host:port`; use `[IPv6]:port` for IPv6 literals |
+| `tls` | Required `starttls` for an explicit upgrade, or `tls` for encryption immediately on connection |
+| `from` | One plain sender email address, without a display name |
+| `to` | 1–20 plain recipient email addresses |
+| `username_env`, `password_env` | Set both for SMTP AUTH PLAIN, or omit both for a relay that permits unauthenticated submission over TLS |
+
+For implicit TLS, use your provider's port (commonly 465) and `"tls": "tls"`.
+For STARTTLS, use its submission port (commonly 587) and `"tls": "starttls"`.
+Authentication occurs only after TLS. The adapter requires TLS 1.2 or later,
+verifies the hostname and system certificate trust, and refuses plaintext
+fallback. For a private CA, install its certificate in the daemon's trusted
+system certificate store. There is no certificate-verification bypass.
+
+Use a provider-supported SMTP password/app password. OAuth/XOAUTH2, attachments,
+HTML templates, client certificates and per-recipient tracking are not supported.
+The sender must be authorized by your relay; configure the domain's delivery
+requirements with your mail provider. All recipients are visible in `To`; use
+separate destinations when recipient isolation is needed.
+
+Email includes a UTF-8 plain-text summary, severity/host subject and stable
+`Message-ID`. The relay must accept every recipient before DATA is sent. SMTP 4xx
+and connection/TLS failures retry within the attempt budget; 5xx and missing
+STARTTLS fail immediately. The whole operation has a 10-second timeout. Once the
+relay acknowledges DATA, a later QUIT failure does not trigger a resend. Relay
+acceptance does not track eventual bounces or inbox delivery. A lost DATA reply
+or daemon crash may still cause duplicate mail; `Message-ID` is not a guarantee
+that a receiving mail system deduplicates it.
+
+## Packaged systemd deployment
+
+The installer ships configuration and environment examples without enabling them:
+
+```sh
+sudo cp /etc/rinlock/notifications-example.json /etc/rinlock/notifications.json
+sudo install -m 0600 -o root -g root /etc/rinlock/notifications.env.example /etc/rinlock/notifications.env
+# Edit both files locally; remove destinations you do not use.
+rinlock destinations --config /etc/rinlock/notifications.json
+sudo mkdir -p /etc/systemd/system/rinlock.service.d
+sudo cp /etc/rinlock/notifications.conf.example /etc/systemd/system/rinlock.service.d/notifications.conf
+sudo systemctl daemon-reload
+sudo systemctl restart rinlock.service
+```
+
+The [drop-in](https://merl111.github.io/RINLock-docs/packaging/notifications.conf.example) loads
+`/etc/rinlock/notifications.env`, clears the legacy webhook environment source,
+and passes `--notification-config`. Keep the environment file root-owned and
+mode 0600; systemd reads it before switching to the service account.
+
+If vulnerability scanning is also enabled, combine `--notification-config` and
+`--vulnerability-config` in **one** `ExecStart` override. Two separate drop-ins
+that each replace `ExecStart` do not combine their flags. Preserve your existing
+custom environment files when adapting the example. Service environment values
+are not automatically available to commands run from an interactive shell.
+
+## Queue operations and migration
+
+The event, incidents, cooldown and all matching destination records commit in one
+transaction. Cooldown is shared per alert before fan-out; it is not per recipient.
+Global `mute_until`/`muted_rules` affect new enqueue decisions. Existing queued
+records retain their destination and payload when filters or policy change.
+
+- Each destination has its own worker, attempt budget, backoff and persisted
+  fixed-UTC-minute rate budget. The configured `rate_per_minute` applies to each
+  destination; total traffic can be that rate times the number of destinations.
+- Global `max_pending` counts delivery records across all destinations. If the
+  whole fan-out will not fit, all matching records become failed with a queue-full
+  reason. The event is retained and cooldown still applies.
+- Attempts are reserved before network I/O with a 30-second crash lease. HTTP
+  requests time out after 5 seconds. HTTP 408/429/5xx and transport failures retry;
+  other 3xx/4xx fail permanently. `Retry-After` is capped at 24 hours.
+- Delivery is at least once. Each new HTTP destination receives a namespaced,
+  stable idempotency key; providers need not honor it. Manual retries preserve
+  that key. Completed/failed history is bounded by `history_days`.
+
+```sh
+rinlock deliveries --socket /run/rinlock/rinlock.sock --state failed
+rinlock deliveries --socket /run/rinlock/rinlock.sock --state pending --before 42
+rinlock deliveries --socket /run/rinlock/rinlock.sock --retry 42
+rinlock notifications --socket /run/rinlock/rinlock.sock --pause 600
+rinlock notifications --socket /run/rinlock/rinlock.sock --pause 0
+```
+
+Use the top-level delivery `id` for `--retry`, `--before`, and the API retry path.
+`event.id` identifies the underlying evidence; multiple delivery IDs can share it.
+`destination` identifies the configured recipient. A failed record can be requeued
+only when queue capacity remains; with active destinations configured, its
+destination must also be present. Pause affects
+all workers; it cannot recall a message already in flight.
+
+Existing `RINLOCK_WEBHOOK_URL`/`RINLOCK_WEBHOOK_TOKEN` deployments continue working
+without a notification config. Their old queued records remain readable, with
+an empty/omitted destination and the legacy event-based HTTP idempotency key.
+Do not combine that legacy URL with `--notification-config`; startup rejects it.
+
+Drain the legacy backlog before switching to named destinations. When starting
+with notifications enabled, queued records with IDs absent from the new config
+become failed with `destination is not configured`, including legacy records
+when switching to named destinations. Restore the original configuration to
+retry them. Starting with no notification destinations leaves backlog suspended.
+
+Do not reuse a destination ID for a different recipient: queued records resolve
+that ID to its current endpoint and credentials after restart. Renaming an ID
+means removing the old destination. Back up the database before upgrading;
+older binaries assume one delivery per event and must not write a database after
+multi-destination delivery has been used.
 
 
 ---
@@ -545,6 +821,8 @@ separate root collector socket, `/run/rinlock-collector/prevention.sock`.
 | `replay --config FILE [--input FILE\|-] [--changed-only]` | Compare candidate detection scores without writes or notifications |
 | `incidents` | Recent correlated incidents |
 | `incident --id N [--state STATE --note TEXT] [--actions]` | Inspect/review incident and review history |
+| `destinations --config FILE [--action check]` | Validate destination configuration locally; no network or daemon needed |
+| `destinations --config FILE --action test --destination ID` | Send a real test to exactly one configured destination |
 | `notifications --pause SECONDS` | Pause delivery; 0 resumes queued work |
 | `deliveries --state pending\|failed\|delivered` | Delivery history and failures |
 | `deliveries --retry ID` | Requeue a failed delivery with a fresh attempt budget |
@@ -563,7 +841,9 @@ Optional prevention flags: `--prevention-config`, `--prevention-object`,
 `--prevention-socket`. `serve --sensor-socket PATH` consumes the separate collector;
 without that flag it uses combined collection. `serve --demo` uses synthetic data.
 `serve --vulnerability-config FILE` enables the separate advisory scanning worker.
-Storage uses `--db`; webhooks use environment variables, not command-line secrets.
+Storage uses `--db`; `--notification-config FILE` enables named destinations.
+Notification credentials use environment variables, not command-line secrets.
+See [adapter and SMTP setup](https://merl111.github.io/RINLock-docs/docs/notifications.md).
 
 Review states are `open`, `acknowledged`, `resolved`. New evidence can reopen a
 resolved incident. Detection rollback is persisted in policy history, but the
@@ -635,6 +915,10 @@ Receivers should support additive fields and deduplicate the `Idempotency-Key`
 header. Delivery authentication uses the optional bearer token. Delivery success
 means the HTTP receiver accepted the request; it does not prove a human saw it.
 
+Delivery records expose a top-level `id`, `destination`, nested `event`, attempts
+and status. Retry URLs and `before` cursors use the delivery ID, not `event.id`.
+See [notification destinations](https://merl111.github.io/RINLock-docs/docs/notifications.md) for payloads and migration.
+
 
 ---
 
@@ -667,7 +951,7 @@ Verify the checksum from the directory containing the archive, for example `(cd 
 Two processes run from the same binary:
 
 - **`rinlock-collector.service`** runs as root with a bounded capability set. It loads probes, watches host files/accounts, optionally follows the journal, and sends observations over `/run/rinlock-collector/events.sock`. It has no database, policy API, or webhook worker. Its allowed socket family is AF_UNIX; it does not need Internet access. Its host filesystem view is retained so private `/tmp` or hidden home directories cannot silently alter configured watches.
-- **`rinlock.service`** runs as the `rinlock` user with no capabilities and `NoNewPrivileges`. It owns `/var/lib/rinlock`, evaluates policy, stores evidence, applies retention, exposes `/run/rinlock/rinlock.sock`, and sends configured webhooks. systemd makes the rest of its filesystem read-only, hides home directories, and restricts other privileged operations.
+- **`rinlock.service`** runs as the `rinlock` user with no capabilities and `NoNewPrivileges`. It owns `/var/lib/rinlock`, evaluates policy, stores evidence, applies retention, exposes `/run/rinlock/rinlock.sock`, and sends configured notifications. systemd makes the rest of its filesystem read-only, hides home directories, and restricts other privileged operations.
 
 The collector verifies its consumer's kernel-reported UID. The daemon requires a root peer on the telemetry socket. Only observation and health frames cross that socket; there is no command interface for the daemon to ask the collector to open files or execute programs. The owner-only API socket remains the operator control boundary. Root or the `rinlock` account can change policy and incident state; there is no multi-user role system.
 
@@ -686,7 +970,7 @@ sudo -u rinlock /usr/local/bin/rinlock dashboard --socket /run/rinlock/rinlock.s
 
 Run the privileged suite on a disposable deployment-equivalent host before enabling production monitoring. Validate the actual installed units too: root-only probe tests do not prove the restricted collector's capability set works on that kernel/LSM configuration. Check `coverage`, process UIDs/capabilities, logs, collection under load, service restart behavior, and notification recovery.
 
-Optional webhook configuration belongs in `/etc/rinlock/webhook.env`, root-owned mode 0600, using the supplied example. Only the unprivileged service receives those environment variables. Do not put credentials in the command line. The interactive `rinlock demo` still never reads webhook credentials.
+Legacy single-webhook configuration belongs in `/etc/rinlock/webhook.env`, root-owned mode 0600, using the supplied example. Only the unprivileged service receives those environment variables. Do not put credentials in the command line. The interactive `rinlock demo` still never reads webhook credentials.
 
 The combined `serve` mode remains available for development and compatibility. `serve --sensor-socket PATH` enables separation; it must use the same `watch_files`, `watch_users`, and `auth_journal` settings as the collector. Detection policy can hot reload; collection and storage settings require restart. On upgrade, stop both services, back up the database/config, install the new archive, validate config, then start both. Keep a copy of the old binary and database for rollback; older software is not certified against newly written databases. Older saved policy versions inherit the new operational defaults when applied and receive a current-format revision ID.
 
@@ -735,7 +1019,8 @@ Compaction refuses an existing output and a database locked by a running daemon.
 
 ## Bounded asynchronous delivery
 
-New notification settings, hot reloadable through the policy workflow:
+Destination setup is covered in [notifications](https://merl111.github.io/RINLock-docs/docs/notifications.md), including SMTP
+and self-hosted ntfy with iOS. Queue settings are hot reloadable through the policy workflow:
 
 ```json
 {
@@ -748,11 +1033,11 @@ New notification settings, hot reloadable through the policy workflow:
 }
 ```
 
-- Attempts and the per-UTC-minute budget are reserved in the database before HTTP. The rate limit permits bursts within a fixed minute; it is not a rolling-window or smooth token-bucket limit. It survives restart and applies to retries too. The single worker processes at most 32 candidates per second and sends requests sequentially, so achieved throughput may be lower than the configured limit.
-- An interrupted attempt consumes budget and gets a 30-second retry lease. The HTTP timeout remains 5 seconds. A receiver may have accepted a request before a crash: delivery remains at least once, and receivers must namespace/deduplicate database-local event IDs.
+- Attempts and the per-UTC-minute budget are reserved in the database before network I/O for each destination. The rate limit permits bursts within a fixed minute; it is not a rolling-window or smooth token-bucket limit. It survives restart and applies to retries too. Each destination worker processes batches of at most 32 candidates and sends sequentially, independently of the other destinations. Achieved throughput may be lower than the configured limit.
+- An interrupted attempt consumes budget and gets a 30-second retry lease. The HTTP timeout is 5 seconds; SMTP allows 10 seconds. A receiver may have accepted a request before a crash: delivery remains at least once, and receivers should deduplicate stable idempotency keys. Legacy webhook keys remain database-local event IDs; named destinations use namespaced keys.
 - Most HTTP 3xx/4xx responses become failed records immediately. HTTP 408, 429, 5xx and transport failures retry with bounded exponential delay. `Retry-After` seconds/HTTP dates are honored up to 24 hours. The attempt limit ends retries even after repeated crashes.
 - A full pending queue records `notification: queue_full` on the event and creates an inspectable failed record with the payload. Evidence collection continues. The cooldown reservation still applies to repeated copies of that alert.
-- Completed/failed records retain their latest payload, attempt count, finish time and failure reason for `history_days`. A manual requeue resets the attempt budget, increments `requeues`, and preserves the idempotency key. It is only allowed for a failed record and while queue capacity remains. History is latest-state history, not an immutable record of every HTTP attempt.
+- Completed/failed records retain their latest payload, attempt count, finish time and failure reason for `history_days`. A manual requeue resets the attempt budget, increments `requeues`, and preserves the idempotency key. It is only allowed for a failed record and while queue capacity remains. History is latest-state history, not an immutable record of every network attempt.
 
 ```sh
 rinlock deliveries --socket /run/rinlock/rinlock.sock --state failed
@@ -761,7 +1046,7 @@ rinlock deliveries --socket /run/rinlock/rinlock.sock --state delivered
 rinlock deliveries --socket /run/rinlock/rinlock.sock --retry 42
 ```
 
-Use the root or `rinlock` account for these commands. `--before ID --limit N` pages delivery history. Existing cooldowns, mutes, and pause/resume from [stage 2](https://merl111.github.io/RINLock-docs/docs/stage-2.md) still apply. `queued` on an immutable event is an enqueue decision, not its current delivery status.
+Use the root or `rinlock` account for these commands. `--before ID --limit N` pages delivery history using top-level delivery IDs, which can differ from `event.id`. Existing cooldowns, mutes, and pause/resume from [stage 2](https://merl111.github.io/RINLock-docs/docs/stage-2.md) still apply. `queued` on an immutable event is an enqueue decision, not its current delivery status.
 
 ## Incident review
 
@@ -787,7 +1072,7 @@ rinlock status --socket /run/rinlock/rinlock.sock
 
 - **Peer UID/config mismatch:** check the installed service users, socket ownership, and matching collector settings; do not loosen the peer checks.
 - **Capacity stop:** free space, resolve incident retention pressure, or stop/compact the database and adjust storage settings. Restart after the cause is fixed.
-- **Failed webhooks:** inspect failure reason, receiver authentication and availability; then explicitly requeue. Do not repeatedly reset attempts against a broken receiver.
+- **Failed notifications:** inspect failure reason, receiver authentication and availability; then explicitly requeue. Do not repeatedly reset attempts against a broken receiver.
 - **Collector restart/disconnect:** inspect verifier/attachment errors, kernel limits, filesystem coverage and service start-rate limits. A restart is a potential monitoring gap, not proof that no events occurred.
 - **Stale socket in manual combined mode:** verify the owner process has stopped before removing it. The code refuses to unlink arbitrary existing sockets; systemd removes each service's runtime directory on stop.
 
@@ -795,7 +1080,7 @@ The 30-second synthetic CLI soak passed with 33 events, four incidents, failed-d
 
 Validation includes race tests, a 5,000-event workload with repeated retention, pending/evidence protection, durable delivery budgets, failed delivery recovery, compaction verification, incident review/reopen, and synthetic collector transport/disconnect tests. `make benchmark` measures userspace scoring + capacity checks + synchronous persistence only. The initial local run measured about 24.2 µs/event, 31,522 allocated bytes/event, and 110 allocations/event on this environment's temporary filesystem and an i9-12900K. This is not a native collection throughput guarantee or a sustained disk benchmark.
 
-Before a production release, still run privileged tests and the actual service pair on each supported kernel/LSM combination, then a deployment-sized sustained workload. Record CPU/RSS, database growth, maintenance pauses, queue depth, kernel/collector loss, shutdown/recovery behavior, and webhook outage recovery. Longer soak, kernel saturation and hard power-loss tests have not been completed here. Validate package installation/upgrades in disposable target VMs before distribution. Fleet management, kernel/root tamper resistance, multiple delivery destinations, and cross-host correlation remain outside the single-host v1 scope.
+Before a production release, still run privileged tests and the actual service pair on each supported kernel/LSM combination, then a deployment-sized sustained workload. Record CPU/RSS, database growth, maintenance pauses, queue depth, kernel/collector loss, shutdown/recovery behavior, and webhook outage recovery. Longer soak, kernel saturation and hard power-loss tests have not been completed here. Validate package installation/upgrades in disposable target VMs before distribution. Fleet management, kernel/root tamper resistance, and cross-host correlation remain outside the single-host v1 scope.
 
 Service settings were checked against the upstream [systemd execution documentation](https://github.com/systemd/systemd/blob/main/man/systemd.exec.xml) and [unit dependency documentation](https://github.com/systemd/systemd/blob/main/man/systemd.unit.xml); static validation does not replace exercising the installed units.
 
@@ -1384,13 +1669,21 @@ enforcement. File-open prevention does not revoke already-open descriptors.
 
 ## Notifications and retries
 
-The daemon queues webhooks asynchronously and records delivery attempts. Bodies
+The daemon supports webhook, Slack, ntfy and SMTP destinations with independent
+delivery records. See [configuration and migration](https://merl111.github.io/RINLock-docs/docs/notifications.md).
+`rinlock destinations --config FILE` validates locally without network access.
+`--action test --destination ID` sends a real message; only use it when the operator
+requests an actual delivery test. SMTP requires verified TLS.
+
+Generic webhook bodies
 retain top-level event version 2 fields and can contain incident context. Accept
 additive fields and deduplicate the `Idempotency-Key` header. A receiver should
 acknowledge only after accepting responsibility for the event. Successful HTTP
 delivery is not proof that an operator read the notification.
 
 Inspect `GET /v1/deliveries` and its bounded history when troubleshooting.
+Use top-level delivery `id` for retries/cursors and `destination` for routing;
+`event.id` is the evidence ID shared by all deliveries of that event.
 Retrying a failed delivery is an explicit action; see [operations](https://merl111.github.io/RINLock-docs/docs/stage-3.md).
 Notification credentials belong in the documented environment configuration,
 never in policy JSON, prompts, generated examples or committed files.
@@ -1572,7 +1865,7 @@ it does not guarantee that every intrusion is detected or prevented.
 - The privileged collector has kernel observation/enforcement access. Keep its
   binary, BPF objects, startup configuration and runtime directories protected.
 - The unprivileged daemon stores potentially sensitive metadata and can deliver
-  events to an operator-configured webhook. Access to its Unix socket grants
+  events to operator-configured notification destinations. Access to its Unix socket grants
   event visibility and detection/incident/notification operations.
 - Prevention mutations require UID 0 verified by `SO_PEERCRED`. The telemetry
   account is read-only on that separate socket. Remote HTTP exposure is unsupported.
@@ -1616,7 +1909,7 @@ response window.
 Trivy is a separately installed trusted executable and shares the daemon account
 and filesystem restrictions. Advisory feeds are data, not executable policies. Scan
 targets and cache paths come only from local startup configuration; API clients
-cannot supply commands or paths. The worker does not receive webhook credentials.
+cannot supply commands or paths. The worker does not receive notification credentials.
 Package findings and KEV membership do not establish local exploitation or trigger
 automatic prevention. Coverage and stale-feed limitations are documented in
 [the scanner guide](https://merl111.github.io/RINLock-docs/docs/vulnerabilities.md).
@@ -1637,5 +1930,6 @@ Download and adapt these JSON files; validate them before activation.
 - [prevention.json](https://merl111.github.io/RINLock-docs/configs/prevention.json)
 - [prevention-example.json](https://merl111.github.io/RINLock-docs/configs/prevention-example.json)
 - [vulnerabilities-example.json](https://merl111.github.io/RINLock-docs/configs/vulnerabilities-example.json)
+- [notifications-example.json](https://merl111.github.io/RINLock-docs/configs/notifications-example.json)
 
-See [configuration](https://merl111.github.io/RINLock-docs/docs/configuration.md), [prevention](https://merl111.github.io/RINLock-docs/docs/prevention.md), and [vulnerability scanning](https://merl111.github.io/RINLock-docs/docs/vulnerabilities.md) for semantics.
+See [configuration](https://merl111.github.io/RINLock-docs/docs/configuration.md), [notifications](https://merl111.github.io/RINLock-docs/docs/notifications.md), [prevention](https://merl111.github.io/RINLock-docs/docs/prevention.md), and [vulnerability scanning](https://merl111.github.io/RINLock-docs/docs/vulnerabilities.md) for semantics.

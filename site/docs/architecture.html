@@ -567,6 +567,34 @@
   
   
     <li class="md-nav__item">
+      <a href="notifications.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="reference.html" class="md-nav__link">
         
   
@@ -1218,7 +1246,7 @@
     <a href="architecture.md">Read as Markdown</a>
     <a href="../llms.txt">Agent index</a>
     <a href="../llms-full.txt">Full context</a>
-    <span>v0.5.0-dev · bb1bf41</span>
+    <span>v0.5.0-dev · 178374c</span>
   </div>
   
   
@@ -1248,7 +1276,9 @@ does not require a central server, Kubernetes or an external malware database.</
   U --&gt; D[Unprivileged daemon]
   D --&gt; E[Detection scoring and correlation]
   E --&gt; B[bbolt events, incidents and outbox]
-  B --&gt; N[Async webhook worker]
+  B --&gt; N[Independent destination workers]
+  N --&gt; HTTP[Webhook, Slack and ntfy]
+  N --&gt; SMTP[SMTP email over TLS]
   B --&gt; API[Local HTTP over Unix socket]
   API --&gt; UI[CLI and terminal dashboard]</code></pre>
 <h2 id="collection">Collection<a class="headerlink" href="#collection" title="Permanent link">&para;</a></h2>
@@ -1281,12 +1311,14 @@ or retained incident evidence. Cleanup frees pages for reuse; offline compaction
 creates a verified new database copy and never replaces the original. Storage
 errors stop the daemon rather than silently continuing without persistence.</p>
 <h2 id="notification-delivery">Notification delivery<a class="headerlink" href="#notification-delivery" title="Permanent link">&para;</a></h2>
-<p>A separate worker reserves attempts before making HTTP requests. The persistent
-outbox survives daemon restart; delivery has a stable idempotency key, bounded
-attempts, cooldown, rate/queue limits, exponential retries, terminal failure
-history and manual retry. A receiver should deduplicate idempotency keys because
-a crash after HTTP success but before acknowledgement can cause another attempt.
-No kernel operation waits on HTTP or database persistence.</p>
+<p>Each configured destination has a worker that reserves attempts before network
+I/O. The transaction records matching destination IDs alongside independent
+delivery IDs, so one failed service does not block another. The persistent outbox
+survives restart and supports stable idempotency keys, bounded attempts, cooldown,
+per-destination rate limits, a shared queue limit, retries and failure history.
+HTTP receivers should deduplicate keys; SMTP uses a stable Message-ID, but neither
+transport guarantees exactly-once delivery. No kernel operation waits on HTTP,
+SMTP or database persistence. See <a href="notifications.html">notification configuration</a>.</p>
 <h2 id="privilege-boundary-and-prevention">Privilege boundary and prevention<a class="headerlink" href="#privilege-boundary-and-prevention" title="Permanent link">&para;</a></h2>
 <p>Packaged deployment separates root collection from the <code>rinlock</code> daemon account.
 Both ends authenticate telemetry peers using <code>SO_PEERCRED</code>. The telemetry stream
@@ -1310,7 +1342,7 @@ See the <a href="prevention.html">prevention guide</a> for exact semantics and c
 <li><code>internal/daemon</code>: lifecycle, queues and maintenance.</li>
 <li><code>internal/policy</code>, <code>internal/detection</code>: matching, scoring and policy revisions.</li>
 <li><code>internal/store</code>: events, correlation, review state, outbox and retention.</li>
-<li><code>internal/notify</code>: HTTP delivery and retry behavior.</li>
+<li><code>internal/notify</code>: webhook, Slack, ntfy and SMTP adapters, configuration and retries.</li>
 <li><code>internal/api</code>, <code>internal/tui</code>: local operations and dashboard.</li>
 </ul>
 <h2 id="optional-advisory-scanning-worker">Optional advisory scanning worker<a class="headerlink" href="#optional-advisory-scanning-worker" title="Permanent link">&para;</a></h2>

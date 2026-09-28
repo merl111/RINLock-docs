@@ -2,7 +2,7 @@
 
 > Linux runtime detection, explicit eBPF prevention, and vulnerability scanning. Terminal dashboard and local Unix API.
 
-Version: 0.5.0-dev. Source commit: bb1bf41f29f91d3fb85489c154e0032c42496258. This documentation is a published development snapshot. Source repository is private.
+Version: 0.5.0-dev. Source commit: 178374cd5700080ab59a8d704ec1a2aaab73ca84. This documentation is a published development snapshot. Source repository is private.
 
 ## Current guides
 
@@ -10,6 +10,7 @@ Version: 0.5.0-dev. Source commit: bb1bf41f29f91d3fb85489c154e0032c42496258. Thi
 - [Getting started](https://merl111.github.io/RINLock-docs/getting-started.md): Build, demo, deployment and feature overview
 - [Architecture](https://merl111.github.io/RINLock-docs/docs/architecture.md): Collector, daemon, storage and trust boundaries
 - [Configuration](https://merl111.github.io/RINLock-docs/docs/configuration.md): Detection, retention and notification settings
+- [Notification destinations](https://merl111.github.io/RINLock-docs/docs/notifications.md): Webhook, Slack, ntfy and SMTP configuration, routing, iOS and retries
 - [CLI and API](https://merl111.github.io/RINLock-docs/docs/reference.md): Commands, Unix sockets, request methods and event contracts
 - [Deployment and operations](https://merl111.github.io/RINLock-docs/docs/stage-3.md): Services, recovery, storage and delivery operations; historical measurements are labelled
 - [Runtime prevention](https://merl111.github.io/RINLock-docs/docs/prevention.md): BPF LSM policy, permissions and failure semantics

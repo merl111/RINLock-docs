@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://merl111.github.io/RINLock-docs/docs/reference.html">
       
       
-        <link rel="prev" href="configuration.html">
+        <link rel="prev" href="notifications.html">
       
       
         <link rel="next" href="stage-3.html">
@@ -434,6 +434,34 @@
     
   
     Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notifications.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notifications
   
 
     
@@ -1174,7 +1202,7 @@
     <a href="reference.md">Read as Markdown</a>
     <a href="../llms.txt">Agent index</a>
     <a href="../llms-full.txt">Full context</a>
-    <span>v0.5.0-dev · bb1bf41</span>
+    <span>v0.5.0-dev · 178374c</span>
   </div>
   
   
@@ -1274,6 +1302,14 @@ separate root collector socket, <code>/run/rinlock-collector/prevention.sock</co
 <td>Inspect/review incident and review history</td>
 </tr>
 <tr>
+<td><code>destinations --config FILE [--action check]</code></td>
+<td>Validate destination configuration locally; no network or daemon needed</td>
+</tr>
+<tr>
+<td><code>destinations --config FILE --action test --destination ID</code></td>
+<td>Send a real test to exactly one configured destination</td>
+</tr>
+<tr>
 <td><code>notifications --pause SECONDS</code></td>
 <td>Pause delivery; 0 resumes queued work</td>
 </tr>
@@ -1328,7 +1364,9 @@ Optional prevention flags: <code>--prevention-config</code>, <code>--prevention-
 <code>--prevention-socket</code>. <code>serve --sensor-socket PATH</code> consumes the separate collector;
 without that flag it uses combined collection. <code>serve --demo</code> uses synthetic data.
 <code>serve --vulnerability-config FILE</code> enables the separate advisory scanning worker.
-Storage uses <code>--db</code>; webhooks use environment variables, not command-line secrets.</p>
+Storage uses <code>--db</code>; <code>--notification-config FILE</code> enables named destinations.
+Notification credentials use environment variables, not command-line secrets.
+See <a href="notifications.html">adapter and SMTP setup</a>.</p>
 <p>Review states are <code>open</code>, <code>acknowledged</code>, <code>resolved</code>. New evidence can reopen a
 resolved incident. Detection rollback is persisted in policy history, but the
 daemon startup file remains authoritative on restart. Prevention hot changes and
@@ -1386,6 +1424,9 @@ policy, independently of the detection policy that scored the observation.</p>
 Receivers should support additive fields and deduplicate the <code>Idempotency-Key</code>
 header. Delivery authentication uses the optional bearer token. Delivery success
 means the HTTP receiver accepted the request; it does not prove a human saw it.</p>
+<p>Delivery records expose a top-level <code>id</code>, <code>destination</code>, nested <code>event</code>, attempts
+and status. Retry URLs and <code>before</code> cursors use the delivery ID, not <code>event.id</code>.
+See <a href="notifications.html">notification destinations</a> for payloads and migration.</p>
 
 
 
@@ -1423,7 +1464,7 @@ means the HTTP receiver accepted the request; it does not prove a human saw it.<
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="configuration.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Configuration">
+          <a href="notifications.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Notifications">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1433,7 +1474,7 @@ means the HTTP receiver accepted the request; it does not prove a human saw it.<
                 Previous
               </span>
               <div class="md-ellipsis">
-                Configuration
+                Notifications
               </div>
             </div>
           </a>

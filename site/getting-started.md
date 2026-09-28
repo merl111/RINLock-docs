@@ -17,7 +17,7 @@ by default and its [scope and failure behavior](docs/prevention.md) are explicit
 [Documentation website](https://merl111.github.io/RINLock-docs/) ·
 [Agent docs](docs/agents.md) · [llms.txt](https://merl111.github.io/RINLock-docs/llms.txt) ·
 [Local guides](docs/index.md) · [Configuration](docs/configuration.md) ·
-[Prevention](docs/prevention.md) · [Vulnerabilities](docs/vulnerabilities.md) · [Operations](docs/stage-3.md) ·
+[Notifications](docs/notifications.md) · [Prevention](docs/prevention.md) · [Vulnerabilities](docs/vulnerabilities.md) · [Operations](docs/stage-3.md) ·
 [Releases](docs/releasing.md) · [Security](SECURITY.md)
 
 ## Try the dashboard
@@ -40,7 +40,7 @@ own daemon and temporary files.
 ![Correlated incident evidence in the running synthetic demo](docs/images/dashboard-incidents.png)
 
 Screenshots are captured from the application using
-[`scripts/screenshots.py`](https://github.com/merl111/RINLock/blob/bb1bf41f29f91d3fb85489c154e0032c42496258/scripts/screenshots.py), with synthetic fixtures.
+[`scripts/screenshots.py`](https://github.com/merl111/RINLock/blob/178374cd5700080ab59a8d704ec1a2aaab73ca84/scripts/screenshots.py), with synthetic fixtures.
 
 ## What it does
 
@@ -50,7 +50,8 @@ Screenshots are captured from the application using
   account changes, and optional SSH/PAM journal observations.
 - **Evidence and incidents:** versioned event identities, explainable scores,
   correlated activity, review notes and automatic reopening on new evidence.
-- **Async notifications:** durable webhook outbox, cooldowns, retries, rate limits,
+- **Async notifications:** webhook, Slack, ntfy and SMTP email adapters with
+  destination routing, independent retries, durable queues, cooldowns, rate limits,
   pause controls, failure history and manual requeue.
 - **Operations:** separate privileged collector and unprivileged daemon, health
   and loss reporting, retention, capacity admission checks and offline compaction.
@@ -123,7 +124,9 @@ python3 scripts/check-package.py
 The archive includes a static binary, both BPF objects, configuration examples,
 installer, systemd units and documentation. Installation does not enable services
 or prevention. Follow the [deployment guide](docs/stage-3.md) for the `rinlock`
-service account, protected sockets, webhook environment and operational checks.
+service account, protected sockets, notification environment and operational checks.
+Configure [SMTP email, Slack, webhooks or self-hosted ntfy](docs/notifications.md),
+including mobile setup for iOS and Android.
 
 For development, `sudo ./bin/rinlock doctor --probe` tests native attachments.
 Production collection uses the separate root collector and unprivileged daemon.
@@ -165,7 +168,7 @@ The container suite exercises real kernel denial, native collection, reattachmen
 audit-buffer overflow and collector/daemon integration. It uses temporary test
 cgroups and removes the test container afterwards.
 
-Version tags trigger the [release workflow](https://github.com/merl111/RINLock/blob/bb1bf41f29f91d3fb85489c154e0032c42496258/.github/workflows/release.yml), producing
+Version tags trigger the [release workflow](https://github.com/merl111/RINLock/blob/178374cd5700080ab59a8d704ec1a2aaab73ca84/.github/workflows/release.yml), producing
 Linux amd64 binaries, checksums and a corresponding-source archive with dependency
 sources/licenses. Major-zero versions are prereleases. See
 [testing and release instructions](docs/releasing.md).

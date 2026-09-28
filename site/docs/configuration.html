@@ -16,7 +16,7 @@
         <link rel="prev" href="architecture.html">
       
       
-        <link rel="next" href="reference.html">
+        <link rel="next" href="notifications.html">
       
       
         
@@ -544,6 +544,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notifications.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1196,7 +1224,7 @@
     <a href="configuration.md">Read as Markdown</a>
     <a href="../llms.txt">Agent index</a>
     <a href="../llms-full.txt">Full context</a>
-    <span>v0.5.0-dev · bb1bf41</span>
+    <span>v0.5.0-dev · 178374c</span>
   </div>
   
   
@@ -1316,9 +1344,11 @@ identity does not create guessed relationships. Policy revisions form separate
 correlation boundaries. Incident evidence retains the first 100 event IDs; the
 observation count can continue increasing.</p>
 <h2 id="notifications">Notifications<a class="headerlink" href="#notifications" title="Permanent link">&para;</a></h2>
-<p>Configure the destination in <code>RINLOCK_WEBHOOK_URL</code>, and optionally a bearer token
-in <code>RINLOCK_WEBHOOK_TOKEN</code>. Packaged deployment reads an operator-owned environment
-file. Do not place tokens in rules, process arguments or committed files.</p>
+<p>Configure webhook, Slack, ntfy and SMTP destinations with the separate startup
+file <code>serve --notification-config FILE</code>. See <a href="notifications.html">notification setup</a>
+for routing, SMTP TLS/authentication, mobile apps and systemd examples. Existing
+<code>RINLOCK_WEBHOOK_URL</code> and optional <code>RINLOCK_WEBHOOK_TOKEN</code> deployments remain
+supported without this file. Credentials belong in the environment, not rules.</p>
 <table>
 <thead>
 <tr>
@@ -1351,12 +1381,12 @@ file. Do not place tokens in rules, process arguments or committed files.</p>
 <tr>
 <td><code>max_pending</code></td>
 <td>10000</td>
-<td>Maximum pending deliveries</td>
+<td>Maximum pending deliveries across all destinations</td>
 </tr>
 <tr>
 <td><code>rate_per_minute</code></td>
 <td>60</td>
-<td>Reservations per fixed UTC minute</td>
+<td>Reservations per destination per fixed UTC minute</td>
 </tr>
 <tr>
 <td><code>history_days</code></td>
@@ -1368,7 +1398,8 @@ file. Do not place tokens in rules, process arguments or committed files.</p>
 <p>Higher eligible scores can bypass a lower-score cooldown. Muting affects new
 enqueue decisions; <code>rinlock notifications --pause SECONDS</code> pauses existing backlog
 delivery, and <code>--pause 0</code> resumes it. Retryable responses include 408, 429, 5xx and
-transport errors. Redirects are not followed; other 3xx/4xx are terminal failures.
+transport errors. SMTP 4xx/transport failures retry; 5xx and missing STARTTLS
+fail immediately. Redirects are not followed; other 3xx/4xx are terminal failures.
 Retry-After is bounded to 24 hours. The durable outbox provides retry/deduplication
 support, not exactly-once delivery.</p>
 <h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">&para;</a></h2>
@@ -1472,13 +1503,13 @@ KEV updates and notification scores. It is not part of hot-reloaded detection po
         
         
           
-          <a href="reference.html" class="md-footer__link md-footer__link--next" aria-label="Next: CLI and API">
+          <a href="notifications.html" class="md-footer__link md-footer__link--next" aria-label="Next: Notifications">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                CLI and API
+                Notifications
               </div>
             </div>
             <div class="md-footer__button md-icon">

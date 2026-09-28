@@ -10,7 +10,7 @@ it does not guarantee that every intrusion is detected or prevented.
 - The privileged collector has kernel observation/enforcement access. Keep its
   binary, BPF objects, startup configuration and runtime directories protected.
 - The unprivileged daemon stores potentially sensitive metadata and can deliver
-  events to an operator-configured webhook. Access to its Unix socket grants
+  events to operator-configured notification destinations. Access to its Unix socket grants
   event visibility and detection/incident/notification operations.
 - Prevention mutations require UID 0 verified by `SO_PEERCRED`. The telemetry
   account is read-only on that separate socket. Remote HTTP exposure is unsupported.
@@ -54,7 +54,7 @@ response window.
 Trivy is a separately installed trusted executable and shares the daemon account
 and filesystem restrictions. Advisory feeds are data, not executable policies. Scan
 targets and cache paths come only from local startup configuration; API clients
-cannot supply commands or paths. The worker does not receive webhook credentials.
+cannot supply commands or paths. The worker does not receive notification credentials.
 Package findings and KEV membership do not establish local exploitation or trigger
 automatic prevention. Coverage and stale-feed limitations are documented in
 [the scanner guide](docs/vulnerabilities.md).

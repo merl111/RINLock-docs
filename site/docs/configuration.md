@@ -61,9 +61,11 @@ observation count can continue increasing.
 
 ## Notifications
 
-Configure the destination in `RINLOCK_WEBHOOK_URL`, and optionally a bearer token
-in `RINLOCK_WEBHOOK_TOKEN`. Packaged deployment reads an operator-owned environment
-file. Do not place tokens in rules, process arguments or committed files.
+Configure webhook, Slack, ntfy and SMTP destinations with the separate startup
+file `serve --notification-config FILE`. See [notification setup](notifications.md)
+for routing, SMTP TLS/authentication, mobile apps and systemd examples. Existing
+`RINLOCK_WEBHOOK_URL` and optional `RINLOCK_WEBHOOK_TOKEN` deployments remain
+supported without this file. Credentials belong in the environment, not rules.
 
 | `notifications` field | Default | Meaning |
 | --- | --- | --- |
@@ -71,14 +73,15 @@ file. Do not place tokens in rules, process arguments or committed files.
 | `muted_rules` | [] | Findings excluded from enqueue eligibility |
 | `mute_until` | unset | Do not enqueue new notifications before this RFC3339 time |
 | `max_attempts` | 10 | Maximum reserved attempts per queued delivery |
-| `max_pending` | 10000 | Maximum pending deliveries |
-| `rate_per_minute` | 60 | Reservations per fixed UTC minute |
+| `max_pending` | 10000 | Maximum pending deliveries across all destinations |
+| `rate_per_minute` | 60 | Reservations per destination per fixed UTC minute |
 | `history_days` | 30 | Completed/failed delivery history retention |
 
 Higher eligible scores can bypass a lower-score cooldown. Muting affects new
 enqueue decisions; `rinlock notifications --pause SECONDS` pauses existing backlog
 delivery, and `--pause 0` resumes it. Retryable responses include 408, 429, 5xx and
-transport errors. Redirects are not followed; other 3xx/4xx are terminal failures.
+transport errors. SMTP 4xx/transport failures retry; 5xx and missing STARTTLS
+fail immediately. Redirects are not followed; other 3xx/4xx are terminal failures.
 Retry-After is bounded to 24 hours. The durable outbox provides retry/deduplication
 support, not exactly-once delivery.
 

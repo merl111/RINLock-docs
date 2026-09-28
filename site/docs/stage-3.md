@@ -23,7 +23,7 @@ Verify the checksum from the directory containing the archive, for example `(cd 
 Two processes run from the same binary:
 
 - **`rinlock-collector.service`** runs as root with a bounded capability set. It loads probes, watches host files/accounts, optionally follows the journal, and sends observations over `/run/rinlock-collector/events.sock`. It has no database, policy API, or webhook worker. Its allowed socket family is AF_UNIX; it does not need Internet access. Its host filesystem view is retained so private `/tmp` or hidden home directories cannot silently alter configured watches.
-- **`rinlock.service`** runs as the `rinlock` user with no capabilities and `NoNewPrivileges`. It owns `/var/lib/rinlock`, evaluates policy, stores evidence, applies retention, exposes `/run/rinlock/rinlock.sock`, and sends configured webhooks. systemd makes the rest of its filesystem read-only, hides home directories, and restricts other privileged operations.
+- **`rinlock.service`** runs as the `rinlock` user with no capabilities and `NoNewPrivileges`. It owns `/var/lib/rinlock`, evaluates policy, stores evidence, applies retention, exposes `/run/rinlock/rinlock.sock`, and sends configured notifications. systemd makes the rest of its filesystem read-only, hides home directories, and restricts other privileged operations.
 
 The collector verifies its consumer's kernel-reported UID. The daemon requires a root peer on the telemetry socket. Only observation and health frames cross that socket; there is no command interface for the daemon to ask the collector to open files or execute programs. The owner-only API socket remains the operator control boundary. Root or the `rinlock` account can change policy and incident state; there is no multi-user role system.
 
@@ -42,7 +42,7 @@ sudo -u rinlock /usr/local/bin/rinlock dashboard --socket /run/rinlock/rinlock.s
 
 Run the privileged suite on a disposable deployment-equivalent host before enabling production monitoring. Validate the actual installed units too: root-only probe tests do not prove the restricted collector's capability set works on that kernel/LSM configuration. Check `coverage`, process UIDs/capabilities, logs, collection under load, service restart behavior, and notification recovery.
 
-Optional webhook configuration belongs in `/etc/rinlock/webhook.env`, root-owned mode 0600, using the supplied example. Only the unprivileged service receives those environment variables. Do not put credentials in the command line. The interactive `rinlock demo` still never reads webhook credentials.
+Legacy single-webhook configuration belongs in `/etc/rinlock/webhook.env`, root-owned mode 0600, using the supplied example. Only the unprivileged service receives those environment variables. Do not put credentials in the command line. The interactive `rinlock demo` still never reads webhook credentials.
 
 The combined `serve` mode remains available for development and compatibility. `serve --sensor-socket PATH` enables separation; it must use the same `watch_files`, `watch_users`, and `auth_journal` settings as the collector. Detection policy can hot reload; collection and storage settings require restart. On upgrade, stop both services, back up the database/config, install the new archive, validate config, then start both. Keep a copy of the old binary and database for rollback; older software is not certified against newly written databases. Older saved policy versions inherit the new operational defaults when applied and receive a current-format revision ID.
 
@@ -91,7 +91,8 @@ Compaction refuses an existing output and a database locked by a running daemon.
 
 ## Bounded asynchronous delivery
 
-New notification settings, hot reloadable through the policy workflow:
+Destination setup is covered in [notifications](notifications.md), including SMTP
+and self-hosted ntfy with iOS. Queue settings are hot reloadable through the policy workflow:
 
 ```json
 {
@@ -104,11 +105,11 @@ New notification settings, hot reloadable through the policy workflow:
 }
 ```
 
-- Attempts and the per-UTC-minute budget are reserved in the database before HTTP. The rate limit permits bursts within a fixed minute; it is not a rolling-window or smooth token-bucket limit. It survives restart and applies to retries too. The single worker processes at most 32 candidates per second and sends requests sequentially, so achieved throughput may be lower than the configured limit.
-- An interrupted attempt consumes budget and gets a 30-second retry lease. The HTTP timeout remains 5 seconds. A receiver may have accepted a request before a crash: delivery remains at least once, and receivers must namespace/deduplicate database-local event IDs.
+- Attempts and the per-UTC-minute budget are reserved in the database before network I/O for each destination. The rate limit permits bursts within a fixed minute; it is not a rolling-window or smooth token-bucket limit. It survives restart and applies to retries too. Each destination worker processes batches of at most 32 candidates and sends sequentially, independently of the other destinations. Achieved throughput may be lower than the configured limit.
+- An interrupted attempt consumes budget and gets a 30-second retry lease. The HTTP timeout is 5 seconds; SMTP allows 10 seconds. A receiver may have accepted a request before a crash: delivery remains at least once, and receivers should deduplicate stable idempotency keys. Legacy webhook keys remain database-local event IDs; named destinations use namespaced keys.
 - Most HTTP 3xx/4xx responses become failed records immediately. HTTP 408, 429, 5xx and transport failures retry with bounded exponential delay. `Retry-After` seconds/HTTP dates are honored up to 24 hours. The attempt limit ends retries even after repeated crashes.
 - A full pending queue records `notification: queue_full` on the event and creates an inspectable failed record with the payload. Evidence collection continues. The cooldown reservation still applies to repeated copies of that alert.
-- Completed/failed records retain their latest payload, attempt count, finish time and failure reason for `history_days`. A manual requeue resets the attempt budget, increments `requeues`, and preserves the idempotency key. It is only allowed for a failed record and while queue capacity remains. History is latest-state history, not an immutable record of every HTTP attempt.
+- Completed/failed records retain their latest payload, attempt count, finish time and failure reason for `history_days`. A manual requeue resets the attempt budget, increments `requeues`, and preserves the idempotency key. It is only allowed for a failed record and while queue capacity remains. History is latest-state history, not an immutable record of every network attempt.
 
 ```sh
 rinlock deliveries --socket /run/rinlock/rinlock.sock --state failed
@@ -117,7 +118,7 @@ rinlock deliveries --socket /run/rinlock/rinlock.sock --state delivered
 rinlock deliveries --socket /run/rinlock/rinlock.sock --retry 42
 ```
 
-Use the root or `rinlock` account for these commands. `--before ID --limit N` pages delivery history. Existing cooldowns, mutes, and pause/resume from [stage 2](stage-2.md) still apply. `queued` on an immutable event is an enqueue decision, not its current delivery status.
+Use the root or `rinlock` account for these commands. `--before ID --limit N` pages delivery history using top-level delivery IDs, which can differ from `event.id`. Existing cooldowns, mutes, and pause/resume from [stage 2](stage-2.md) still apply. `queued` on an immutable event is an enqueue decision, not its current delivery status.
 
 ## Incident review
 
@@ -143,7 +144,7 @@ rinlock status --socket /run/rinlock/rinlock.sock
 
 - **Peer UID/config mismatch:** check the installed service users, socket ownership, and matching collector settings; do not loosen the peer checks.
 - **Capacity stop:** free space, resolve incident retention pressure, or stop/compact the database and adjust storage settings. Restart after the cause is fixed.
-- **Failed webhooks:** inspect failure reason, receiver authentication and availability; then explicitly requeue. Do not repeatedly reset attempts against a broken receiver.
+- **Failed notifications:** inspect failure reason, receiver authentication and availability; then explicitly requeue. Do not repeatedly reset attempts against a broken receiver.
 - **Collector restart/disconnect:** inspect verifier/attachment errors, kernel limits, filesystem coverage and service start-rate limits. A restart is a potential monitoring gap, not proof that no events occurred.
 - **Stale socket in manual combined mode:** verify the owner process has stopped before removing it. The code refuses to unlink arbitrary existing sockets; systemd removes each service's runtime directory on stop.
 
@@ -151,6 +152,6 @@ The 30-second synthetic CLI soak passed with 33 events, four incidents, failed-d
 
 Validation includes race tests, a 5,000-event workload with repeated retention, pending/evidence protection, durable delivery budgets, failed delivery recovery, compaction verification, incident review/reopen, and synthetic collector transport/disconnect tests. `make benchmark` measures userspace scoring + capacity checks + synchronous persistence only. The initial local run measured about 24.2 µs/event, 31,522 allocated bytes/event, and 110 allocations/event on this environment's temporary filesystem and an i9-12900K. This is not a native collection throughput guarantee or a sustained disk benchmark.
 
-Before a production release, still run privileged tests and the actual service pair on each supported kernel/LSM combination, then a deployment-sized sustained workload. Record CPU/RSS, database growth, maintenance pauses, queue depth, kernel/collector loss, shutdown/recovery behavior, and webhook outage recovery. Longer soak, kernel saturation and hard power-loss tests have not been completed here. Validate package installation/upgrades in disposable target VMs before distribution. Fleet management, kernel/root tamper resistance, multiple delivery destinations, and cross-host correlation remain outside the single-host v1 scope.
+Before a production release, still run privileged tests and the actual service pair on each supported kernel/LSM combination, then a deployment-sized sustained workload. Record CPU/RSS, database growth, maintenance pauses, queue depth, kernel/collector loss, shutdown/recovery behavior, and webhook outage recovery. Longer soak, kernel saturation and hard power-loss tests have not been completed here. Validate package installation/upgrades in disposable target VMs before distribution. Fleet management, kernel/root tamper resistance, and cross-host correlation remain outside the single-host v1 scope.
 
 Service settings were checked against the upstream [systemd execution documentation](https://github.com/systemd/systemd/blob/main/man/systemd.exec.xml) and [unit dependency documentation](https://github.com/systemd/systemd/blob/main/man/systemd.unit.xml); static validation does not replace exercising the installed units.

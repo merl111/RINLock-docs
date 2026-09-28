@@ -6,6 +6,8 @@ Start with the repository [quick start](../getting-started.md), then choose a gu
   daemon, storage, policy boundaries, and notification delivery.
 - [Configuration reference](configuration.md): all detection, collector,
   correlation, storage and notification settings.
+- [Notification destinations](notifications.md): webhook, Slack, ntfy with iOS,
+  SMTP TLS/authentication, routing, delivery tests and migration.
 - [CLI and API reference](reference.md): commands, sockets, endpoints and dashboard.
 - [Deployment and operations](stage-3.md): installation, systemd, retention,
   compaction, incident review, retries and recovery.
