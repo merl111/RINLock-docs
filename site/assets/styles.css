@@ -3,6 +3,7 @@
 .md-grid { max-width: 78rem; }
 .md-typeset h1 { font-weight: 750; letter-spacing: -.03em; }
 .md-typeset img { border: 1px solid #71809640; border-radius: .45rem; }
+.md-typeset img.brand-logo, .md-typeset img[src$="rinlock-logo.png"] { border: 0; border-radius: 0; object-fit: contain; }
 .agent-links { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; font-size: .66rem; padding: .65rem .8rem; margin-bottom: 1.5rem; border: 1px solid #71809640; border-radius: .4rem; background: #7180960c; }
 .agent-links a { color: var(--md-accent-fg-color); }
 .agent-links span { margin-left: auto; opacity: .65; font-family: var(--md-code-font); }

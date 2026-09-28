@@ -1,3 +1,5 @@
+<p><img src="docs/images/rinlock-logo.png" alt="RINLock logo: an R integrated with a lock and circuit" width="144" height="144"></p>
+
 # RINLock
 
 **Linux runtime intrusion detection and opt-in eBPF prevention.**
@@ -38,7 +40,7 @@ own daemon and temporary files.
 ![Correlated incident evidence in the running synthetic demo](docs/images/dashboard-incidents.png)
 
 Screenshots are captured from the application using
-[`scripts/screenshots.py`](https://github.com/merl111/RINLock/blob/5a341d1c8e10c997aa7c32d8f643a86d26005dcd/scripts/screenshots.py), with synthetic fixtures.
+[`scripts/screenshots.py`](https://github.com/merl111/RINLock/blob/e73177aff5f478708367d9c1eb71cbc402ec8c85/scripts/screenshots.py), with synthetic fixtures.
 
 ## What it does
 
@@ -163,7 +165,7 @@ The container suite exercises real kernel denial, native collection, reattachmen
 audit-buffer overflow and collector/daemon integration. It uses temporary test
 cgroups and removes the test container afterwards.
 
-Version tags trigger the [release workflow](https://github.com/merl111/RINLock/blob/5a341d1c8e10c997aa7c32d8f643a86d26005dcd/.github/workflows/release.yml), producing
+Version tags trigger the [release workflow](https://github.com/merl111/RINLock/blob/e73177aff5f478708367d9c1eb71cbc402ec8c85/.github/workflows/release.yml), producing
 Linux amd64 binaries, checksums and a corresponding-source archive with dependency
 sources/licenses. Major-zero versions are prereleases. See
 [testing and release instructions](docs/releasing.md).

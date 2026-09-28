@@ -1,3 +1,5 @@
+![RINLock logo: an R integrated with a lock and circuit](docs/images/rinlock-logo.png){ .brand-logo width="144" height="144" }
+
 <p class="hero-label">Linux security · Terminal first · Agent ready</p>
 
 # Know what runs. Control what matters.

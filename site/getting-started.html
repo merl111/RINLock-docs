@@ -22,7 +22,7 @@
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="docs/images/rinlock-logo.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
@@ -98,8 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="index.html" title="RINLock" class="md-header__button md-logo" aria-label="RINLock" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 11c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V5l9-4 9 4zm-9 10c3.75-1 7-5.46 7-9.78V6.3l-7-3.12L5 6.3v4.92C5 15.54 8.25 20 12 21m-2-4-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9"/></svg>
+  <img src="docs/images/rinlock-logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -236,8 +235,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="index.html" title="RINLock" class="md-nav__button md-logo" aria-label="RINLock" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 11c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V5l9-4 9 4zm-9 10c3.75-1 7-5.46 7-9.78V6.3l-7-3.12L5 6.3v4.92C5 15.54 8.25 20 12 21m-2-4-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9"/></svg>
+  <img src="docs/images/rinlock-logo.png" alt="logo">
 
     </a>
     RINLock
@@ -1262,13 +1260,15 @@
     <a href="getting-started.md">Read as Markdown</a>
     <a href="llms.txt">Agent index</a>
     <a href="llms-full.txt">Full context</a>
-    <span>v0.5.0-dev · 5a341d1</span>
+    <span>v0.5.0-dev · e73177a</span>
   </div>
   
   
                   
 
 
+
+<p><img src="docs/images/rinlock-logo.png" alt="RINLock logo: an R integrated with a lock and circuit" width="144" height="144"></p>
 
 <h1 id="rinlock">RINLock<a class="headerlink" href="#rinlock" title="Permanent link">&para;</a></h1>
 <p><strong>Linux runtime intrusion detection and opt-in eBPF prevention.</strong></p>
@@ -1298,7 +1298,7 @@ own daemon and temporary files.</p>
 <p><img alt="Event investigation in the running synthetic demo" src="docs/images/dashboard-events.png" /></p>
 <p><img alt="Correlated incident evidence in the running synthetic demo" src="docs/images/dashboard-incidents.png" /></p>
 <p>Screenshots are captured from the application using
-<a href="https://github.com/merl111/RINLock/blob/5a341d1c8e10c997aa7c32d8f643a86d26005dcd/scripts/screenshots.py"><code>scripts/screenshots.py</code></a>, with synthetic fixtures.</p>
+<a href="https://github.com/merl111/RINLock/blob/e73177aff5f478708367d9c1eb71cbc402ec8c85/scripts/screenshots.py"><code>scripts/screenshots.py</code></a>, with synthetic fixtures.</p>
 <h2 id="what-it-does">What it does<a class="headerlink" href="#what-it-does" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Behavioral detection:</strong> web-server shells, unexpected credential-file opens,
@@ -1388,7 +1388,7 @@ Runtime changes reset to the root-owned startup policy when the collector restar
 <p>The container suite exercises real kernel denial, native collection, reattachment,
 audit-buffer overflow and collector/daemon integration. It uses temporary test
 cgroups and removes the test container afterwards.</p>
-<p>Version tags trigger the <a href="https://github.com/merl111/RINLock/blob/5a341d1c8e10c997aa7c32d8f643a86d26005dcd/.github/workflows/release.yml">release workflow</a>, producing
+<p>Version tags trigger the <a href="https://github.com/merl111/RINLock/blob/e73177aff5f478708367d9c1eb71cbc402ec8c85/.github/workflows/release.yml">release workflow</a>, producing
 Linux amd64 binaries, checksums and a corresponding-source archive with dependency
 sources/licenses. Major-zero versions are prereleases. See
 <a href="docs/releasing.html">testing and release instructions</a>.</p>

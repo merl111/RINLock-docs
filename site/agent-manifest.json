@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project_version": "0.5.0-dev",
-  "source_revision": "5a341d1c8e10c997aa7c32d8f643a86d26005dcd",
+  "source_revision": "e73177aff5f478708367d9c1eb71cbc402ec8c85",
   "source_dirty": false,
   "site_url": "https://merl111.github.io/RINLock-docs/",
   "resources": [
@@ -10,16 +10,16 @@
       "url": "https://merl111.github.io/RINLock-docs/index.md",
       "title": "RINLock",
       "type": "text/markdown",
-      "bytes": 2495,
-      "sha256": "3ba35bf65ccbc45e162e6130ff0c6b3e0a37c14e099fd0a962c94ca4e6472bd4"
+      "bytes": 2623,
+      "sha256": "4b12f6be7451df27fa5a1efac48a054dfb81a6693c038c3271d5daf3319ade99"
     },
     {
       "path": "getting-started.md",
       "url": "https://merl111.github.io/RINLock-docs/getting-started.md",
       "title": "Getting started",
       "type": "text/markdown",
-      "bytes": 7437,
-      "sha256": "1d30e11309c610e27347bb07ba51a0f72182e7da03027b0b979578ac276b03c0"
+      "bytes": 7571,
+      "sha256": "15170af56d277f22a575e45f23513687844288aff6bf6954901ff8e5ef2e99f9"
     },
     {
       "path": "docs/index.md",
@@ -158,6 +158,14 @@
       "sha256": "aaf135472f81c5b4a0dca9367e5bb5e9750032b5bebe5442b36e4c0a47430df3"
     },
     {
+      "path": "docs/images/rinlock-logo.png",
+      "url": "https://merl111.github.io/RINLock-docs/docs/images/rinlock-logo.png",
+      "title": "rinlock-logo.png",
+      "type": "image/png",
+      "bytes": 469905,
+      "sha256": "6b8475ed1079127ac4ec666bbe180e3875a54c7ebb41f6cce4b0a27e4af33e4f"
+    },
+    {
       "path": "configs/default.json",
       "url": "https://merl111.github.io/RINLock-docs/configs/default.json",
       "title": "default.json",
@@ -275,15 +283,15 @@
       "title": "llms.txt",
       "type": "text/plain",
       "bytes": 2932,
-      "sha256": "741ebf7e0501487e2aaa2c9a2997eb2903d5235884b16a3a260267278650b7fb"
+      "sha256": "35f3016792f7e9e65f7c8c66e7106255e92c655cc9c7a30b5b3555d727e06d40"
     },
     {
       "path": "llms-full.txt",
       "url": "https://merl111.github.io/RINLock-docs/llms-full.txt",
       "title": "llms-full.txt",
       "type": "text/plain",
-      "bytes": 91167,
-      "sha256": "8db629397679fe1efed6224dd3c8e644c7b84f20eca0b46182763105780825ca"
+      "bytes": 91468,
+      "sha256": "952fcd230811ead934e3730d8d9e7001458439968d2dcf72f28ad4f8841802f9"
     }
   ]
 }
