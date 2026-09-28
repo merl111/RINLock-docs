@@ -1174,7 +1174,7 @@
     <a href="documentation-site.md">Read as Markdown</a>
     <a href="../llms.txt">Agent index</a>
     <a href="../llms-full.txt">Full context</a>
-    <span>v0.5.0-dev · e73177a</span>
+    <span>v0.5.0-dev · bb1bf41</span>
   </div>
   
   
@@ -1210,6 +1210,12 @@ python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class=
 Markdown downloads and theme controls work without a backend. Canonical and
 HTML discovery URLs use the public address; visible Markdown links are relative
 and also work in the local preview.</p>
+<p>Mermaid code fences render as diagrams through Material's native integration.
+The theme loads the Mermaid runtime from its CDN when a diagram is present;
+JavaScript and access to that CDN are required. Raw Markdown and the agent bundle
+retain the original diagram source. The artifact checker verifies that Mermaid
+fences are marked for rendering, and diagram changes should also be checked in
+the browser in both color themes.</p>
 <h2 id="publishing-boundary">Publishing boundary<a class="headerlink" href="#publishing-boundary" title="Permanent link">&para;</a></h2>
 <p><code>docs-site/pages.json</code> is the explicit publication list. It contains Markdown
 pages and specific configuration examples, validation records and screenshots.

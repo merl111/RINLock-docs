@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project_version": "0.5.0-dev",
-  "source_revision": "e73177aff5f478708367d9c1eb71cbc402ec8c85",
+  "source_revision": "bb1bf41f29f91d3fb85489c154e0032c42496258",
   "source_dirty": false,
   "site_url": "https://merl111.github.io/RINLock-docs/",
   "resources": [
@@ -19,7 +19,7 @@
       "title": "Getting started",
       "type": "text/markdown",
       "bytes": 7571,
-      "sha256": "15170af56d277f22a575e45f23513687844288aff6bf6954901ff8e5ef2e99f9"
+      "sha256": "892ec24118034b32052119eb29347be4fac4582991cffd824704bd730e9a522b"
     },
     {
       "path": "docs/index.md",
@@ -34,8 +34,8 @@
       "url": "https://merl111.github.io/RINLock-docs/docs/architecture.md",
       "title": "Architecture",
       "type": "text/markdown",
-      "bytes": 5867,
-      "sha256": "4cec2d22af6d8f80bce1e1ceb8bff42d40fb157a3a4a5ea9544659c01cf81409"
+      "bytes": 6120,
+      "sha256": "0aafb9c7627051827037d5373d8142b2a8856ab2e007908e042c967c6cf14d0b"
     },
     {
       "path": "docs/configuration.md",
@@ -90,8 +90,8 @@
       "url": "https://merl111.github.io/RINLock-docs/docs/documentation-site.md",
       "title": "Maintaining the docs site",
       "type": "text/markdown",
-      "bytes": 5967,
-      "sha256": "04288a8e0b0f1c2f5e02976cf70e239c6c55dd9534af4682ada4254c41d9a198"
+      "bytes": 6396,
+      "sha256": "88798ed26ff838fccd37ee5239e5cd50b4ad3d323582563337b5d9de98b2f612"
     },
     {
       "path": "docs/releasing.md",
@@ -283,15 +283,15 @@
       "title": "llms.txt",
       "type": "text/plain",
       "bytes": 2932,
-      "sha256": "35f3016792f7e9e65f7c8c66e7106255e92c655cc9c7a30b5b3555d727e06d40"
+      "sha256": "d4557bcec8bce448cd4133ca02468faf3e4cca0717586ba5bb81d5276b1470f7"
     },
     {
       "path": "llms-full.txt",
       "url": "https://merl111.github.io/RINLock-docs/llms-full.txt",
       "title": "llms-full.txt",
       "type": "text/plain",
-      "bytes": 91468,
-      "sha256": "952fcd230811ead934e3730d8d9e7001458439968d2dcf72f28ad4f8841802f9"
+      "bytes": 91721,
+      "sha256": "0cdb947c35eeb5e4538f3a5dbd368c0619b047a144c2ebf1fd8b51c33b846c05"
     }
   ]
 }

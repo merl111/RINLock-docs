@@ -2,7 +2,7 @@
 
 > Linux runtime detection, explicit eBPF prevention, and vulnerability scanning. Terminal dashboard and local Unix API.
 
-Version: 0.5.0-dev. Source commit: e73177aff5f478708367d9c1eb71cbc402ec8c85. This documentation is a published development snapshot. Source repository is private.
+Version: 0.5.0-dev. Source commit: bb1bf41f29f91d3fb85489c154e0032c42496258. This documentation is a published development snapshot. Source repository is private.
 
 ## Current guides
 

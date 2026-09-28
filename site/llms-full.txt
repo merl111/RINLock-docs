@@ -2,7 +2,7 @@
 
 > Linux runtime detection, explicit eBPF prevention, and vulnerability scanning. Terminal dashboard and local Unix API.
 
-Version: 0.5.0-dev. Source commit: e73177aff5f478708367d9c1eb71cbc402ec8c85. This documentation is a published development snapshot. Source repository is private.
+Version: 0.5.0-dev. Source commit: bb1bf41f29f91d3fb85489c154e0032c42496258. This documentation is a published development snapshot. Source repository is private.
 
 
 ---
@@ -134,7 +134,7 @@ own daemon and temporary files.
 ![Correlated incident evidence in the running synthetic demo](https://merl111.github.io/RINLock-docs/docs/images/dashboard-incidents.png)
 
 Screenshots are captured from the application using
-[`scripts/screenshots.py`](https://github.com/merl111/RINLock/blob/e73177aff5f478708367d9c1eb71cbc402ec8c85/scripts/screenshots.py), with synthetic fixtures.
+[`scripts/screenshots.py`](https://github.com/merl111/RINLock/blob/bb1bf41f29f91d3fb85489c154e0032c42496258/scripts/screenshots.py), with synthetic fixtures.
 
 ## What it does
 
@@ -259,7 +259,7 @@ The container suite exercises real kernel denial, native collection, reattachmen
 audit-buffer overflow and collector/daemon integration. It uses temporary test
 cgroups and removes the test container afterwards.
 
-Version tags trigger the [release workflow](https://github.com/merl111/RINLock/blob/e73177aff5f478708367d9c1eb71cbc402ec8c85/.github/workflows/release.yml), producing
+Version tags trigger the [release workflow](https://github.com/merl111/RINLock/blob/bb1bf41f29f91d3fb85489c154e0032c42496258/.github/workflows/release.yml), producing
 Linux amd64 binaries, checksums and a corresponding-source archive with dependency
 sources/licenses. Major-zero versions are prereleases. See
 [testing and release instructions](https://merl111.github.io/RINLock-docs/docs/releasing.md).
@@ -285,6 +285,8 @@ does not require a central server, Kubernetes or an external malware database.
 
 ```mermaid
 flowchart TD
+  accTitle: RINLock runtime architecture
+  accDescr: Kernel observation and optional prevention feed a privileged collector, which sends telemetry to the unprivileged daemon for detection, storage, asynchronous notifications and the terminal dashboard.
   H[Linux operations] --> T[Tracepoints and credential kprobe]
   H --> L[Optional BPF LSM authorization]
   P[Root prevention CLI] --> C[Privileged collector control socket]

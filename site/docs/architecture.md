@@ -6,6 +6,8 @@ does not require a central server, Kubernetes or an external malware database.
 
 ```mermaid
 flowchart TD
+  accTitle: RINLock runtime architecture
+  accDescr: Kernel observation and optional prevention feed a privileged collector, which sends telemetry to the unprivileged daemon for detection, storage, asynchronous notifications and the terminal dashboard.
   H[Linux operations] --> T[Tracepoints and credential kprobe]
   H --> L[Optional BPF LSM authorization]
   P[Root prevention CLI] --> C[Privileged collector control socket]

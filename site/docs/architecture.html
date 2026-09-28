@@ -1218,7 +1218,7 @@
     <a href="architecture.md">Read as Markdown</a>
     <a href="../llms.txt">Agent index</a>
     <a href="../llms-full.txt">Full context</a>
-    <span>v0.5.0-dev · e73177a</span>
+    <span>v0.5.0-dev · bb1bf41</span>
   </div>
   
   
@@ -1230,7 +1230,9 @@
 <p>RINLock is a single-host Linux amd64 agent. It combines low-level observations
 with explicit detection rules and a separate kernel authorization policy. It
 does not require a central server, Kubernetes or an external malware database.</p>
-<div class="highlight"><pre><span></span><code>flowchart TD
+<pre class="mermaid"><code>flowchart TD
+  accTitle: RINLock runtime architecture
+  accDescr: Kernel observation and optional prevention feed a privileged collector, which sends telemetry to the unprivileged daemon for detection, storage, asynchronous notifications and the terminal dashboard.
   H[Linux operations] --&gt; T[Tracepoints and credential kprobe]
   H --&gt; L[Optional BPF LSM authorization]
   P[Root prevention CLI] --&gt; C[Privileged collector control socket]
@@ -1248,8 +1250,7 @@ does not require a central server, Kubernetes or an external malware database.</
   E --&gt; B[bbolt events, incidents and outbox]
   B --&gt; N[Async webhook worker]
   B --&gt; API[Local HTTP over Unix socket]
-  API --&gt; UI[CLI and terminal dashboard]
-</code></pre></div>
+  API --&gt; UI[CLI and terminal dashboard]</code></pre>
 <h2 id="collection">Collection<a class="headerlink" href="#collection" title="Permanent link">&para;</a></h2>
 <p><code>bpf/sensor.bpf.c</code> uses raw syscall entry/exit for open/connect observations,
 successful execution tracepoints, process-exit cleanup and <code>commit_creds</code> for

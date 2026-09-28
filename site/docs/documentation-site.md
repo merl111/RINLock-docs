@@ -37,6 +37,13 @@ Markdown downloads and theme controls work without a backend. Canonical and
 HTML discovery URLs use the public address; visible Markdown links are relative
 and also work in the local preview.
 
+Mermaid code fences render as diagrams through Material's native integration.
+The theme loads the Mermaid runtime from its CDN when a diagram is present;
+JavaScript and access to that CDN are required. Raw Markdown and the agent bundle
+retain the original diagram source. The artifact checker verifies that Mermaid
+fences are marked for rendering, and diagram changes should also be checked in
+the browser in both color themes.
+
 ## Publishing boundary
 
 `docs-site/pages.json` is the explicit publication list. It contains Markdown
