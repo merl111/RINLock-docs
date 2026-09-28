@@ -1,0 +1,24 @@
+{
+  "result": "PASS",
+  "synthetic_seconds": 30,
+  "events_observed": 33,
+  "incidents": 4,
+  "loopback_receiver_calls": 24,
+  "peak_rss_kib": 16752,
+  "checks": [
+    "failed delivery requeue",
+    "incident acknowledgment/resolution/reopen",
+    "periodic maintenance",
+    "clean shutdown",
+    "compaction without changing source"
+  ],
+  "live_bpf_tested": false,
+  "binary_sha256": "938c4749b705ebb9fff6e5e34fae20b1c685eacc20191efd9c1851e3c43bc517",
+  "build": {
+    "arch": "amd64",
+    "go": "go1.26.6-X:nodwarf5",
+    "os": "linux",
+    "version": "0.3.0-dev"
+  },
+  "kernel": "7.1.9-1-MANJARO"
+}

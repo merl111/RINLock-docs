@@ -1,0 +1,8 @@
+# Copy to /etc/systemd/system/rinlock.service.d/vulnerabilities.conf after
+# installing Trivy and reviewing /etc/rinlock/vulnerabilities.json.
+# Scanning inherits the daemon's restricted filesystem view and permissions.
+# Use explicit readable rootfs exports, application paths or image archives for
+# more predictable coverage. This drop-in does not grant additional privileges.
+[Service]
+ExecStart=
+ExecStart=/usr/local/bin/rinlock serve --config /etc/rinlock/rules.json --sensor-socket /run/rinlock-collector/events.sock --socket /run/rinlock/rinlock.sock --db /var/lib/rinlock/events.db --vulnerability-config /etc/rinlock/vulnerabilities.json

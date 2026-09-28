@@ -1,0 +1,129 @@
+{
+  "web_processes": [
+    "nginx",
+    "apache2",
+    "httpd",
+    "php-fpm",
+    "node",
+    "gunicorn",
+    "uwsgi"
+  ],
+  "shells": [
+    "sh",
+    "bash",
+    "dash",
+    "zsh",
+    "ash",
+    "ksh",
+    "fish"
+  ],
+  "credential_paths": [
+    "/etc/shadow",
+    "/etc/gshadow",
+    "*/.ssh/id_*",
+    "*/.aws/credentials",
+    "*/.kube/config",
+    "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  ],
+  "credential_readers": [],
+  "allowed_cidrs": [],
+  "suspicious_ports": [
+    4444,
+    5555,
+    6667,
+    9001
+  ],
+  "rules": [
+    {
+      "id": "new-shell",
+      "description": "New shell executed",
+      "kinds": [
+        "exec"
+      ],
+      "processes": [
+        "sh",
+        "bash",
+        "dash",
+        "zsh",
+        "ash",
+        "ksh",
+        "fish"
+      ],
+      "score": 30
+    },
+    {
+      "id": "watched-file-changed",
+      "description": "Filesystem change observed on a watched path",
+      "kinds": [
+        "file_change"
+      ],
+      "score": 70
+    },
+    {
+      "id": "account-created",
+      "description": "Local user account created",
+      "kinds": [
+        "user_created"
+      ],
+      "score": 80
+    },
+    {
+      "id": "account-removed",
+      "description": "Local user account removed",
+      "kinds": [
+        "user_deleted"
+      ],
+      "score": 70
+    },
+    {
+      "id": "login-success",
+      "description": "Successful login reported by authentication service",
+      "kinds": [
+        "login"
+      ],
+      "outcomes": [
+        "success"
+      ],
+      "score": 30
+    },
+    {
+      "id": "login-failed",
+      "description": "Authentication failure reported by service",
+      "kinds": [
+        "login"
+      ],
+      "outcomes": [
+        "failed"
+      ],
+      "score": 45
+    }
+  ],
+  "watch_files": [
+    "/etc/passwd",
+    "/etc/group",
+    "/etc/shadow",
+    "/etc/sudoers"
+  ],
+  "watch_users": true,
+  "auth_journal": false,
+  "notify_score": 70,
+  "correlation": {
+    "window_seconds": 300,
+    "login_failures": 5
+  },
+  "notifications": {
+    "cooldown_seconds": 300,
+    "muted_rules": [],
+    "max_attempts": 10,
+    "max_pending": 10000,
+    "rate_per_minute": 60,
+    "history_days": 30
+  },
+  "storage": {
+    "retention_days": 30,
+    "max_events": 1000000,
+    "max_database_bytes": 1073741824,
+    "min_free_bytes": 268435456,
+    "maintenance_seconds": 60
+  }
+}

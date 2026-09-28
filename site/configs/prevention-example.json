@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "web-no-shell",
+      "mode": "audit",
+      "action": "deny",
+      "operation": "exec",
+      "cgroup": "/sys/fs/cgroup/system.slice/nginx.service",
+      "path": "/usr/bin/dash"
+    },
+    {
+      "id": "web-no-shadow",
+      "mode": "audit",
+      "action": "deny",
+      "operation": "file_open",
+      "cgroup": "/sys/fs/cgroup/system.slice/nginx.service",
+      "path": "/etc/shadow"
+    },
+    {
+      "id": "web-database",
+      "mode": "audit",
+      "action": "allow",
+      "operation": "connect",
+      "cgroup": "/sys/fs/cgroup/system.slice/nginx.service",
+      "cidr": "10.20.0.5/32",
+      "port": 5432
+    },
+    {
+      "id": "web-no-other-ipv4",
+      "mode": "audit",
+      "action": "deny",
+      "operation": "connect",
+      "cgroup": "/sys/fs/cgroup/system.slice/nginx.service",
+      "cidr": "0.0.0.0/0"
+    },
+    {
+      "id": "web-no-ipv6",
+      "mode": "audit",
+      "action": "deny",
+      "operation": "connect",
+      "cgroup": "/sys/fs/cgroup/system.slice/nginx.service",
+      "cidr": "::/0"
+    }
+  ]
+}

@@ -1,0 +1,1529 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Linux runtime detection, explicit eBPF prevention, and vulnerability scanning. Guides for operators and coding agents.">
+      
+      
+      
+        <link rel="canonical" href="https://merl111.github.io/RINLock-docs/docs/prevention.html">
+      
+      
+        <link rel="prev" href="stage-3.html">
+      
+      
+        <link rel="next" href="vulnerabilities.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Runtime prevention - RINLock</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../assets/styles.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  <link rel="describedby" href="https://merl111.github.io/RINLock-docs/llms.txt" type="text/plain">
+  
+  <link rel="alternate" href="https://merl111.github.io/RINLock-docs/docs/prevention.md" type="text/markdown" title="Markdown version">
+  
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stage-4-explicit-runtime-prevention" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="RINLock" class="md-header__button md-logo" aria-label="RINLock" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 11c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V5l9-4 9 4zm-9 10c3.75-1 7-5.46 7-9.78V6.3l-7-3.12L5 6.3v4.92C5 15.54 8.25 20 12 21m-2-4-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RINLock
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Runtime prevention
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="cyan"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/merl111/RINLock" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    merl111/RINLock (private source)
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="RINLock" class="md-nav__button md-logo" aria-label="RINLock" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 11c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V5l9-4 9 4zm-9 10c3.75-1 7-5.46 7-9.78V6.3l-7-3.12L5 6.3v4.92C5 15.54 8.25 20 12 21m-2-4-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9"/></svg>
+
+    </a>
+    RINLock
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/merl111/RINLock" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    merl111/RINLock (private source)
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="configuration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI and API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stage-3.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment and operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime prevention
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="prevention.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime prevention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites-and-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites and validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-a-workload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure a workload
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-the-collector-and-daemon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start the collector and daemon
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operate-and-recover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operate and recover
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-behavior-and-audit-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure behavior and audit delivery
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scope-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="vulnerabilities.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vulnerability scanning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    For agents
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    For agents
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="agents.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configs/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SECURITY.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="releasing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing and releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTRIBUTING.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHANGELOG.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="documentation-site.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Maintaining the docs site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation history
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Implementation history
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stage-1.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stage 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stage-2.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stage 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites-and-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites and validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-a-workload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure a workload
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-the-collector-and-daemon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start the collector and daemon
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operate-and-recover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operate and recover
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-behavior-and-audit-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure behavior and audit delivery
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scope-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+  <div class="agent-links" aria-label="Agent documentation formats">
+    <a href="prevention.md">Read as Markdown</a>
+    <a href="../llms.txt">Agent index</a>
+    <a href="../llms-full.txt">Full context</a>
+    <span>v0.5.0-dev · 5a341d1</span>
+  </div>
+  
+  
+                  
+
+
+
+<h1 id="stage-4-explicit-runtime-prevention">Stage 4: explicit runtime prevention<a class="headerlink" href="#stage-4-explicit-runtime-prevention" title="Permanent link">&para;</a></h1>
+<p>RINLock has opt-in BPF LSM authorization for <strong>program execution, file opens,
+and IPv4/IPv6 connect attempts</strong>. The original sensor continues logging its
+observations. Detection scores do not turn blocking on. Nothing is enabled by
+installing the release: the shipped prevention configuration has no rules.</p>
+<h2 id="prerequisites-and-validation">Prerequisites and validation<a class="headerlink" href="#prerequisites-and-validation" title="Permanent link">&para;</a></h2>
+<p>Use a disposable Linux amd64 machine with cgroup v2, kernel BTF, BPF LSM compiled
+in (<code>CONFIG_BPF_LSM=y</code>), and <code>bpf</code> in the active LSM list. Keep the distro's other
+LSMs enabled. Modern kernels with the three hooks and <code>bpf_d_path</code> support are
+required; the real verifier/attachment probe is the support gate, not a version
+number. All three hooks must load and attach. A requested prevention collector
+fails startup on unsupported hooks or permissions; it never silently falls back
+to observation.</p>
+<p>From the source checkout:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>build
+./bin/rinlock<span class="w"> </span>doctor<span class="w"> </span>--prevention
+sudo<span class="w"> </span>./bin/rinlock<span class="w"> </span>doctor<span class="w"> </span>--prevention<span class="w"> </span>--probe
+sudo<span class="w"> </span>env<span class="w"> </span><span class="s2">"PATH=</span><span class="nv">$PATH</span><span class="s2">"</span><span class="w"> </span>make<span class="w"> </span>test-prevention-live
+</code></pre></div>
+<p>The probe attaches <strong>empty</strong> policies and immediately detaches them. The live
+test creates a temporary cgroup and uses harmless fixtures to verify audit,
+enforcement, exceptions, path replacement, symlinks, IPv4, IPv6, mapped IPv4,
+scope isolation, emergency disable, and blocking during audit-ring overflow.
+When opted in, missing privileges or verifier/attachment failures fail the test;
+they do not skip. Normal <code>make test</code> runs the actual C matching/decision routines
+with mocked maps and audit transport, Go policy/control tests, and object ABI
+checks. Those tests do not prove the kernel verifier accepts the programs.</p>
+<p>A rootful Docker alternative is <code>scripts/test-container.sh</code>; see
+<a href="releasing.html#privileged-kernel-tests">container validation</a>. It also verifies
+collector-to-daemon persistence and enforcement across daemon disconnect.</p>
+<h2 id="configure-a-workload">Configure a workload<a class="headerlink" href="#configure-a-workload" title="Permanent link">&para;</a></h2>
+<p>Edit a copy of <code>configs/prevention-example.json</code>. It demonstrates a web service
+with shell/file deny rules and a database connection exception. Replace the
+example workload, executable paths and network ranges with real values.</p>
+<p>Rules are evaluated in order; <strong>the first matching enabled rule wins</strong>. Put
+allow exceptions before broader deny rules. No match allows the operation,
+subject to other Linux security policies. Existing LSM denials are preserved.</p>
+<p>Each rule contains:</p>
+<ul>
+<li><code>id</code>: unique, 1–63 ASCII letters, digits, underscores, dots or hyphens.</li>
+<li><code>mode</code>: <code>audit</code> (default), <code>enforce</code>, or <code>disabled</code>.</li>
+<li><code>action</code>: <code>deny</code> (default) or <code>allow</code>.</li>
+<li><code>operation</code>: <code>exec</code>, <code>file_open</code>, or <code>connect</code>.</li>
+<li><code>cgroup</code>: exact existing directory below <code>/sys/fs/cgroup</code>.</li>
+<li>Optional <code>uid</code>: real UID in the host's initial user namespace, including 0.</li>
+<li>For files/exec: <code>path</code>, a literal canonical absolute pathname, at most 255 bytes.</li>
+<li>For connect: <code>cidr</code> and optional <code>port</code> (omitted/0 means every port).</li>
+</ul>
+<p>An audit deny emits <code>would_block</code> and permits the operation. An enforce deny
+returns <code>EACCES</code>. An allow rule records <code>allowed</code> or <code>would_allow</code>; it cannot
+override another security module's denial. Audit rules still participate in
+first-match ordering, so an audit exception before an enforce deny permits that
+matching operation. Policy maximum: 32 rules.</p>
+<div class="highlight"><pre><span></span><code>./bin/rinlock<span class="w"> </span>prevention<span class="w"> </span>--check<span class="w"> </span>--config<span class="w"> </span>my-prevention.json
+sudo<span class="w"> </span>install<span class="w"> </span>-m<span class="w"> </span><span class="m">0644</span><span class="w"> </span>my-prevention.json<span class="w"> </span>/etc/rinlock/prevention.json
+</code></pre></div>
+<p>Local validation checks syntax and semantics. Activation additionally resolves
+the cgroups. The root cgroup, symlink aliases, and the collector's own exact
+cgroup are refused. Active bindings hold open cgroup descriptors and report their
+IDs in status. Recreated cgroups need policy reapplication. Child cgroups are
+<strong>not</strong> included automatically; ordinary child processes remain covered while
+they stay in the selected cgroup. Use separate rules for child cgroups.</p>
+<p>The collector and recovery shell must run outside protected workloads. A workload
+able to move itself to an unprotected cgroup or administer BPF can bypass these
+policies; this is not protection against a fully privileged host administrator.</p>
+<h2 id="start-the-collector-and-daemon">Start the collector and daemon<a class="headerlink" href="#start-the-collector-and-daemon" title="Permanent link">&para;</a></h2>
+<p>The collector startup file must be a root-owned regular file, with no group/other
+write permission. Direct startup (supply matching detection settings to both):</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>./bin/rinlock<span class="w"> </span>collect<span class="w"> </span>--config<span class="w"> </span>configs/default.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--consumer-user<span class="w"> </span>rinlock<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prevention-config<span class="w"> </span>/etc/rinlock/prevention.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prevention-object<span class="w"> </span>bpf/prevention.bpf.o
+</code></pre></div>
+<p>The unprivileged daemon connects with its existing <code>--sensor-socket</code> option.
+Prevention is supported in the separate collector deployment; <code>demo</code> and combined
+<code>serve</code> do not load prevention. When running manually, ensure the collector's
+runtime directory/socket group permits the telemetry user to connect. Packaged
+systemd units already use root:rinlock with a 0750 runtime directory.</p>
+<p>For an installed deployment, the installer provides an <strong>inactive</strong> drop-in
+example at <code>/etc/rinlock/prevention.conf.example</code>. After validation and policy
+review, copy it to
+<code>/etc/systemd/system/rinlock-collector.service.d/prevention.conf</code>, reload systemd,
+and restart the collector and daemon. That restart creates an enforcement gap.
+No service activation or boot-setting changes are performed by this feature.</p>
+<h2 id="operate-and-recover">Operate and recover<a class="headerlink" href="#operate-and-recover" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>rinlock<span class="w"> </span>prevention
+sudo<span class="w"> </span>rinlock<span class="w"> </span>prevention<span class="w"> </span>--rule<span class="w"> </span>web-no-shadow<span class="w"> </span>--mode<span class="w"> </span>enforce
+sudo<span class="w"> </span>rinlock<span class="w"> </span>prevention<span class="w"> </span>--rule<span class="w"> </span>web-no-shadow<span class="w"> </span>--mode<span class="w"> </span>audit
+sudo<span class="w"> </span>rinlock<span class="w"> </span>prevention<span class="w"> </span>--config<span class="w"> </span>my-prevention.json
+rinlock<span class="w"> </span>prevention<span class="w"> </span>--history
+sudo<span class="w"> </span>rinlock<span class="w"> </span>prevention<span class="w"> </span>--rollback<span class="w"> </span>REVISION
+sudo<span class="w"> </span>rinlock<span class="w"> </span>prevention<span class="w"> </span>--disable
+</code></pre></div>
+<p><code>--socket</code> selects the prevention control socket (default
+<code>/run/rinlock-collector/prevention.sock</code>). Reads allow root and the configured
+telemetry user; mutations require a kernel-authenticated UID 0 peer. Clients
+also verify that the server is root. The unprivileged daemon cannot activate
+policies through its detection API. <code>--expected GENERATION</code> supports scripted
+compare-and-swap; otherwise the CLI fetches the generation before applying.</p>
+<p>Dashboard tab <strong>5 Prevention</strong> shows ordered rules, bindings, counters, and active
+revision. Arrow keys select a rule; <code>a</code>, <code>e</code>, <code>d</code> set audit/enforce/disabled;
+<code>D</code> disables every rule. Mutations require a root dashboard. Use
+<code>dashboard --socket DAEMON_SOCKET --prevention-socket CONTROL_SOCKET</code> for custom
+locations. CLI history and rollback are available for recovery.</p>
+<p>Policy maps are built and frozen before a single outer-map update publishes the
+complete ruleset. Failed preparation leaves the active rules unchanged. Each
+decision includes the matching rule and revision; control events include the
+full normalized policy, generation and acting UID. The last 64 snapshots are
+available for runtime rollback. <strong>Hot changes are runtime-only</strong>: restart reloads
+the root-owned startup file. Save an intended permanent policy there explicitly;
+changing the file alone does not reload running hooks. After emergency disable,
+also disable/update the startup file before any restart.</p>
+<h2 id="failure-behavior-and-audit-delivery">Failure behavior and audit delivery<a class="headerlink" href="#failure-behavior-and-audit-delivery" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Kernel decisions never wait for the daemon, database, network or webhook.</li>
+<li>A daemon disconnect leaves prevention attached in the collector. The collector
+  waits for a new telemetry consumer and reports session failures in its log.</li>
+<li>Collector exit/crash detaches prevention. Policies/links are not pinned across
+  collector restarts or reboots. There is no fail-closed guarantee across a
+  collector failure. Service health monitoring and workload supervision remain
+  necessary for deployments requiring continuous prevention.</li>
+<li>Matching decisions enter a bounded 4 MiB kernel ring. Audit overflow increments
+  loss counters; a deny remains a deny. On reconnection, the daemon receives a
+  <code>collector_gap</code> event. Control changes have a bounded 128-event audit queue;
+  ordinary updates stop when full. Emergency disable still works and counts any
+  lost control record. Delivery/storage failures can lose audit data; this is not
+  an exactly-once or zero-loss kernel audit trail.</li>
+<li>A file path resolution failure applies a scoped enforce-deny rule conservatively
+  and records the failure. It never grants a path-based allow exception. With
+  audit-only rules, it records <code>would_block</code> without denying. An unresolved path
+  may therefore deny an unrelated long pathname in the same protected workload.</li>
+<li>Deny decisions receive suspicion priority 90 and use the existing persisted
+  event stream and asynchronous notification outbox. Notification threshold,
+  mute/cooldown and delivery limits still apply. Allow decisions are logged with
+  priority 0 unless a detection rule scores them. Counters measure hook decisions;
+  multiple hooks can run for one application-level action.</li>
+</ul>
+<h2 id="scope-limits">Scope limits<a class="headerlink" href="#scope-limits" title="Permanent link">&para;</a></h2>
+<p>Paths use the kernel-resolved pathname in the calling task's filesystem view.
+Symlink spellings resolve to their targets; replacing a file at the same resolved
+path remains covered. Alternate hard links, bind-mount paths, changed filesystem
+roots, and renamed executable copies can have different paths. This is <strong>path
+policy</strong>, not a guarantee against every alias or executable of equivalent content.
+Exec policies check each binary/interpreter seen by <code>bprm_check_security</code>; they do
+not prevent an existing interpreter from evaluating commands internally.</p>
+<p><code>file_open</code> prevents new opens, not reads through descriptors already open,
+inherited or received from another process, nor existing mappings. It does not
+implement a general file-mutation/metadata protection policy. <code>connect</code> covers
+IPv4/IPv6 connection attempts, including connected UDP. It does not filter
+unconnected UDP <code>sendto</code>, existing connections, raw packets, Unix sockets, DNS
+names or application payloads. IPv4-mapped IPv6 destinations use IPv4 rules;
+native IPv6 needs its own rules. Network allowlists require both families and
+appropriate send/packet hooks for complete egress confinement.</p>
+<p>Account creation, login prevention, privilege-transition enforcement, persistent
+kernel links, recursive/orchestrator workload identity, comprehensive file access
+control and packet-level quarantine are further extensions. They are not implied
+by enabling these three operation types.</p>
+<h2 id="technical-references">Technical references<a class="headerlink" href="#technical-references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://docs.kernel.org/bpf/prog_lsm.html">Linux BPF LSM</a></li>
+<li><a href="https://docs.kernel.org/security/lsm-development.html">Linux security hook interfaces</a></li>
+<li><a href="https://github.com/torvalds/linux/blob/master/kernel/trace/bpf_trace.c">Kernel d_path helper implementation and LSM eligibility</a></li>
+<li><a href="https://tetragon.io/docs/concepts/enforcement/">Tetragon enforcement semantics</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+  
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="stage-3.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Deployment and operations">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Deployment and operations
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="vulnerabilities.html" class="md-footer__link md-footer__link--next" aria-label="Next: Vulnerability scanning">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Vulnerability scanning
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      RINLock · GPL-2.0-only
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+  <div class="md-footer-meta md-typeset"><div class="md-grid">
+    <a href="../assets/third-party-notices.txt">Third-party notices</a>
+  </div></div>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

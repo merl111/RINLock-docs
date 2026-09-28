@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "trivy_path": "/usr/local/bin/trivy",
+  "cache_dir": "/var/lib/rinlock/vulnerability-cache",
+  "sync_hours": 24,
+  "scan_hours": 6,
+  "timeout_seconds": 900,
+  "java_db": false,
+  "targets": [
+    {"id": "host", "kind": "rootfs", "path": "/"}
+  ]
+}

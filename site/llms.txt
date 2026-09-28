@@ -1,0 +1,34 @@
+# RINLock
+
+> Linux runtime detection, explicit eBPF prevention, and vulnerability scanning. Terminal dashboard and local Unix API.
+
+Version: 0.5.0-dev. Source commit: 5a341d1c8e10c997aa7c32d8f643a86d26005dcd. This documentation is a published development snapshot. Source repository is private.
+
+## Current guides
+
+- [RINLock](https://merl111.github.io/RINLock-docs/index.md): Project overview and documentation entry points
+- [Getting started](https://merl111.github.io/RINLock-docs/getting-started.md): Build, demo, deployment and feature overview
+- [Architecture](https://merl111.github.io/RINLock-docs/docs/architecture.md): Collector, daemon, storage and trust boundaries
+- [Configuration](https://merl111.github.io/RINLock-docs/docs/configuration.md): Detection, retention and notification settings
+- [CLI and API](https://merl111.github.io/RINLock-docs/docs/reference.md): Commands, Unix sockets, request methods and event contracts
+- [Deployment and operations](https://merl111.github.io/RINLock-docs/docs/stage-3.md): Services, recovery, storage and delivery operations; historical measurements are labelled
+- [Runtime prevention](https://merl111.github.io/RINLock-docs/docs/prevention.md): BPF LSM policy, permissions and failure semantics
+- [Vulnerability scanning](https://merl111.github.io/RINLock-docs/docs/vulnerabilities.md): Trivy, KEV, coverage, asynchronous jobs and findings
+- [Agent integration](https://merl111.github.io/RINLock-docs/docs/agents.md): Machine-readable entry points and reliable automation recipes
+- [Testing and releases](https://merl111.github.io/RINLock-docs/docs/releasing.md): Validation gates and release artifacts
+- [Security model](https://merl111.github.io/RINLock-docs/SECURITY.md): Assumptions, limitations and reporting
+- [Configuration examples](https://merl111.github.io/RINLock-docs/configs/index.md): Downloadable JSON examples and validation references
+
+## Machine-readable resources
+
+- [Full context](https://merl111.github.io/RINLock-docs/llms-full.txt): Current guides in one Markdown bundle
+- [Manifest](https://merl111.github.io/RINLock-docs/agent-manifest.json): Version, commit and resource SHA-256 digests
+
+## Optional
+
+- [Guide index](https://merl111.github.io/RINLock-docs/docs/index.md): Map of current guides and historical validation
+- [Maintaining the docs site](https://merl111.github.io/RINLock-docs/docs/documentation-site.md): Build, validation, published files and GitHub Pages deployment
+- [Contributing](https://merl111.github.io/RINLock-docs/CONTRIBUTING.md): Source development and validation workflow
+- [Changelog](https://merl111.github.io/RINLock-docs/CHANGELOG.md): Implementation milestones and release history
+- [Stage 1 history](https://merl111.github.io/RINLock-docs/docs/stage-1.md): Historical collection implementation notes
+- [Stage 2 history](https://merl111.github.io/RINLock-docs/docs/stage-2.md): Historical detection implementation notes

@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "scanner": "0.74.0",
+  "findings": 5,
+  "packages": 1,
+  "database_updated": "2026-09-28T07:15:22.974504279Z",
+  "kev_updated": "2026-09-27T21:30:35.5521Z",
+  "checks": [
+    "real startup sync",
+    "real package scan",
+    "CVE and fixed version",
+    "freshness",
+    "async CLI scan",
+    "repeated scan deduplication"
+  ],
+  "host_scanned": false,
+  "time": "2026-09-28T08:27:23.849394876Z"
+}

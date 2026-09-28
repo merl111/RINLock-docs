@@ -1,0 +1,6 @@
+# Optional rinlock-collector.service drop-in. Review /etc/rinlock/prevention.json
+# and validate kernel attachment before copying this to:
+# /etc/systemd/system/rinlock-collector.service.d/prevention.conf
+[Service]
+ExecStart=
+ExecStart=/usr/local/bin/rinlock collect --config /etc/rinlock/rules.json --bpf-object /usr/local/lib/rinlock/sensor.bpf.o --socket /run/rinlock-collector/events.sock --consumer-user rinlock --prevention-config /etc/rinlock/prevention.json --prevention-object /usr/local/lib/rinlock/prevention.bpf.o --prevention-socket /run/rinlock-collector/prevention.sock
